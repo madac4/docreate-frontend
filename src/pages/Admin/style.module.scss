@@ -1,0 +1,38 @@
+.menuItem {
+    @apply dark:text-gray-300 text-gray-800 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-all;
+    &.current {
+        @apply bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium;
+    }
+}
+.menuItemMobile {
+    @apply text-gray-800 hover:bg-gray-700 dark:text-gray-400 hover:text-white block px-3 py-2 rounded-md text-base font-medium;
+    &.current {
+        @apply bg-gray-900 text-white;
+    }
+    &.logout {
+        @apply text-red-500 w-full text-left hover:bg-gray-100;
+    }
+}
+
+.userDropdownItem {
+    @apply block px-4 py-2 w-full text-left text-sm text-gray-700 hover:bg-gray-100 transition-all;
+    &.logout {
+        @apply text-red-500;
+    }
+}
+
+.burger {
+    @apply inline-flex items-center justify-center rounded-md dark:bg-gray-700 p-2 text-white dark:text-gray-300 dark:hover:bg-gray-900 hover:bg-gray-600 transition-all hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800;
+    background-color: rgb(156, 163, 175) !important;
+}
+
+.tableRow {
+    @apply whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900 dark:text-gray-200;
+}
+
+.tableId {
+    @apply whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white;
+}
+.tableText {
+    @apply whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-400;
+}

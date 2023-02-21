@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+main {
+    padding-top: 90px;
+}
+
+.pdf {
+    height: 90%;
+}
+#pdfobject {
+    height: 100%;
+}
+#pdfobject p {
+    @apply text-gray-300 text-center mt-5 text-xl;
+}
+#pdfobject p a {
+    @apply hidden;
+}
+
+@layer base {
+    .input-style {
+        @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
+    }
+    .input-style__icon {
+        @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
+    }
+    .button-primary {
+        @apply inline-flex gap-2 items-center rounded bg-indigo-600 sm:px-5 px-2 py-2 text-white hover:bg-transparent hover:bg-indigo-700 transition-all active:bg-indigo-800 disabled:bg-indigo-900 disabled:cursor-not-allowed disabled:bg-opacity-90;
+    }
+    .auth-input {
+        @apply w-full rounded-lg border-gray-200 p-3 pr-12 text-sm shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
+    }
+    .form-label {
+        @apply flex flex-col gap-1 w-full text-sm font-medium text-gray-700 dark:text-white;
+    }
+    .role-dropdown {
+        @apply absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white dark:bg-gray-600 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm;
+    }
+    .role-dropdown__item {
+        @apply text-gray-900 relative cursor-pointer select-none py-2 pl-3 pr-9 hover:bg-purple-700 dark:hover:bg-indigo-600 hover:bg-opacity-5 dark:text-white;
+    }
+}
+
+.loader {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #fff;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
