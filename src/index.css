@@ -3,7 +3,6 @@
 @tailwind utilities;
 
 main {
-    padding-top: 90px;
 }
 
 .pdf {
@@ -19,7 +18,116 @@ main {
     @apply hidden;
 }
 
+.loader {
+    animation: rotate 2s linear infinite;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+}
+.loader-button {
+    animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loader circle,
+.loader-button circle {
+    animation: dash 1.5s ease-in-out infinite;
+}
+
+@keyframes dash {
+    0% {
+        stroke-dasharray: 1, 150;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -35;
+    }
+    100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -124;
+    }
+}
+
+.modal {
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+}
+.modal.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.with-aside {
+    grid-template-columns: 1fr 420px;
+}
+.with-aside form {
+    padding-bottom: 30px;
+}
+
+aside.legend h3,
+aside.legend p {
+    color: #fff;
+}
+
+aside ul li {
+    margin-bottom: 6px;
+    list-style: disc;
+    color: #fff;
+}
+aside ul {
+    padding-left: 10px;
+    margin: 8px 0;
+}
+
+aside.legend h3 {
+    @apply font-semibold text-xl mb-2;
+}
+
+.pg-viewer-wrapper {
+    margin-bottom: 10px;
+    width: 100%;
+    max-height: 75vh;
+}
+
+aside.legend p:not(:last-child) {
+    margin-bottom: 10px;
+}
+aside.legend {
+    width: 100%;
+}
+
+.modal-body {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.document-container {
+    width: 100% !important;
+}
+
+.document-link span {
+    max-width: 420px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 @layer base {
+    .document-link {
+        @apply flex cursor-pointer text-gray-700 dark:text-gray-200 dark:border-gray-800 dark:hover:border-gray-700  items-center justify-between rounded-md border border-gray-200 p-4 text-sm font-medium shadow-sm hover:border-blue-500  hover:ring-1 hover:ring-blue-500 transition-all duration-300;
+    }
+    .modal {
+        @apply fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 bg-black bg-opacity-30 md:h-full;
+    }
     .input-style {
         @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
     }
@@ -27,7 +135,7 @@ main {
         @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;
     }
     .button-primary {
-        @apply inline-flex gap-2 items-center rounded bg-indigo-600 sm:px-5 px-2 py-2 text-white hover:bg-transparent hover:bg-indigo-700 transition-all active:bg-indigo-800 disabled:bg-indigo-900 disabled:cursor-not-allowed disabled:bg-opacity-90;
+        @apply inline-flex gap-2 items-center bg-indigo-600 sm:px-5 px-2 py-2 rounded-lg text-white hover:bg-transparent hover:bg-indigo-700 transition-all active:bg-indigo-800 disabled:bg-indigo-900 disabled:cursor-not-allowed disabled:bg-opacity-90;
     }
     .auth-input {
         @apply w-full rounded-lg border-gray-200 p-3 pr-12 text-sm shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500;

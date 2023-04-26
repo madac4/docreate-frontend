@@ -27,12 +27,18 @@
 }
 
 .tableRow {
-    @apply whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900 dark:text-gray-200;
+    @apply whitespace-nowrap pl-4 py-2 text-left font-medium text-gray-900 dark:text-gray-200;
 }
 
 .tableId {
-    @apply whitespace-nowrap px-4 py-2 font-medium text-gray-900 dark:text-white;
+    @apply whitespace-nowrap pl-4 py-2 font-medium text-gray-900 dark:text-white;
 }
 .tableText {
-    @apply whitespace-nowrap px-4 py-2 text-gray-700 dark:text-gray-400;
+    @apply whitespace-nowrap pl-4 py-2 text-gray-700 dark:text-gray-400;
+}
+
+.tableText {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

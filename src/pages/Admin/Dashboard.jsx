@@ -1,5 +1,5 @@
 import React from 'react';
-import { BellIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { BellIcon, Bars3Icon, XMarkIcon, DocumentPlusIcon } from '@heroicons/react/24/outline';
 import { Link, useNavigate, NavLink } from 'react-router-dom';
 import styles from './style.module.scss';
 import { useSelector, connect } from 'react-redux';
@@ -8,12 +8,17 @@ import { logOut } from '../../redux/api';
 function Dashboard({ children, logOut, pageTitle }) {
     const [userDropdown, setUserDropdown] = React.useState(false);
     const [burger, setBurger] = React.useState(false);
+    const [isAdmin, setIsAdmin] = React.useState(false);
     const { user, isAuth } = useSelector((state) => state.auth);
     const navigate = useNavigate();
 
     React.useEffect(() => {
+        user && user.role.toLowerCase() === 'admin' ? setIsAdmin(true) : setIsAdmin(false);
+    }, [user]);
+
+    React.useEffect(() => {
         if (!isAuth) {
-            navigate('/login');
+            navigate('/');
         }
     }, [isAuth, navigate]);
 
@@ -53,7 +58,7 @@ function Dashboard({ children, logOut, pageTitle }) {
                                         Dashboard
                                     </NavLink>
 
-                                    {user.role.toLowerCase() === 'admin' && (
+                                    {isAdmin && (
                                         <NavLink
                                             to="/dashboard/users"
                                             className={({ isActive }) =>
@@ -64,11 +69,26 @@ function Dashboard({ children, logOut, pageTitle }) {
                                             Lista de utilizatori
                                         </NavLink>
                                     )}
+                                    {isAdmin && (
+                                        <NavLink
+                                            to="/dashboard/documents"
+                                            className={({ isActive }) =>
+                                                isActive
+                                                    ? `${styles.menuItem} ${styles.current}`
+                                                    : `${styles.menuItem}`
+                                            }>
+                                            Lista de documente
+                                        </NavLink>
+                                    )}
                                 </div>
                             </div>
                         </div>
                         <div className="hidden md:block">
                             <div className="ml-4 flex items-center md:ml-6">
+                                <Link className="button-primary mr-3" to="/documents">
+                                    <span className="text-sm font-medium"> Creează document </span>
+                                    <DocumentPlusIcon className="w-5 h-5"></DocumentPlusIcon>
+                                </Link>
                                 <button type="button" className="p-1">
                                     <span className="sr-only">View notifications</span>
                                     <BellIcon className="w-6 h-6 text-gray-400 hover:text-gray-900 transition-colors dark:hover:text-white"></BellIcon>
@@ -108,14 +128,27 @@ function Dashboard({ children, logOut, pageTitle }) {
                                                 Your Profile
                                             </a>
 
-                                            <Link
-                                                to="/register"
-                                                className={styles.userDropdownItem}
-                                                role="menuitem"
-                                                tabIndex="-1"
-                                                id="user-menu-item-1">
-                                                Add User
-                                            </Link>
+                                            {isAdmin && (
+                                                <Link
+                                                    to="/register"
+                                                    className={styles.userDropdownItem}
+                                                    role="menuitem"
+                                                    tabIndex="-1"
+                                                    id="user-menu-item-1">
+                                                    Adaugă Utilizator
+                                                </Link>
+                                            )}
+
+                                            {isAdmin && (
+                                                <Link
+                                                    to="/dashboard/new-document"
+                                                    className={styles.userDropdownItem}
+                                                    role="menuitem"
+                                                    tabIndex="-1"
+                                                    id="user-menu-item-1">
+                                                    Adaugă Document
+                                                </Link>
+                                            )}
 
                                             <button
                                                 className={`${styles.userDropdownItem} ${styles.logout}`}
@@ -123,7 +156,7 @@ function Dashboard({ children, logOut, pageTitle }) {
                                                 role="menuitem"
                                                 tabIndex="-1"
                                                 id="user-menu-item-2">
-                                                Sign out
+                                                Ieși din cont
                                             </button>
                                         </div>
                                     )}
@@ -221,7 +254,8 @@ function Dashboard({ children, logOut, pageTitle }) {
                     </h1>
                 </div>
             </header>
-            <main className="pt-10">
+
+            <main className="pt-10 dark:bg-gray-900 min-h-screen">
                 <div className="mx-auto max-w-7xl">{children}</div>
             </main>
         </div>

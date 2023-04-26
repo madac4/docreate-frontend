@@ -1,10 +1,13 @@
 import React from 'react';
-import Header from '../components/Header';
+import Layout from '../components/Layout';
+import { useParams } from 'react-router-dom';
+import ResetModal from '../components/ResetModal';
 
 function Home() {
+    const { token } = useParams();
+
     return (
-        <div className="wrapper">
-            <Header></Header>
+        <Layout>
             <section className="dark:text-white text-gray-900">
                 <div className="mx-auto max-w-screen-xl px-4 py-32 flex h-screen items-center">
                     <div className="mx-auto max-w-3xl text-center">
@@ -19,7 +22,9 @@ function Home() {
                     </div>
                 </div>
             </section>
-        </div>
+
+            {token && <ResetModal token={token} />}
+        </Layout>
     );
 }
 

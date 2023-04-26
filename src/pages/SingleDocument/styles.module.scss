@@ -8,6 +8,7 @@
             height: fit-content;
         }
         padding: 20px;
+        padding-top: 90px;
         .fields {
             display: flex;
             flex-direction: column;
@@ -20,6 +21,9 @@
     }
     &__body {
         padding: 20px;
-        @apply dark:bg-gray-700 bg-gray-200;
+        max-height: 100vh;
+        padding-top: 90px;
+        overflow: auto;
+        @apply dark:bg-gray-800 bg-gray-200;
     }
 }
