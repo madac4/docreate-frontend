@@ -58,28 +58,24 @@ function Dashboard({ children, logOut, pageTitle }) {
                                         Dashboard
                                     </NavLink>
 
-                                    {isAdmin && (
-                                        <NavLink
-                                            to="/dashboard/users"
-                                            className={({ isActive }) =>
-                                                isActive
-                                                    ? `${styles.menuItem} ${styles.current}`
-                                                    : `${styles.menuItem}`
-                                            }>
-                                            Lista de utilizatori
-                                        </NavLink>
-                                    )}
-                                    {isAdmin && (
-                                        <NavLink
-                                            to="/dashboard/documents"
-                                            className={({ isActive }) =>
-                                                isActive
-                                                    ? `${styles.menuItem} ${styles.current}`
-                                                    : `${styles.menuItem}`
-                                            }>
-                                            Lista de documente
-                                        </NavLink>
-                                    )}
+                                    <NavLink
+                                        to="/dashboard/users"
+                                        className={({ isActive }) =>
+                                            isActive
+                                                ? `${styles.menuItem} ${styles.current}`
+                                                : `${styles.menuItem}`
+                                        }>
+                                        Lista de utilizatori
+                                    </NavLink>
+                                    <NavLink
+                                        to="/dashboard/documents"
+                                        className={({ isActive }) =>
+                                            isActive
+                                                ? `${styles.menuItem} ${styles.current}`
+                                                : `${styles.menuItem}`
+                                        }>
+                                        Lista de documente
+                                    </NavLink>
                                 </div>
                             </div>
                         </div>
@@ -128,27 +124,22 @@ function Dashboard({ children, logOut, pageTitle }) {
                                                 Your Profile
                                             </a>
 
-                                            {isAdmin && (
-                                                <Link
-                                                    to="/register"
-                                                    className={styles.userDropdownItem}
-                                                    role="menuitem"
-                                                    tabIndex="-1"
-                                                    id="user-menu-item-1">
-                                                    Adaugă Utilizator
-                                                </Link>
-                                            )}
-
-                                            {isAdmin && (
-                                                <Link
-                                                    to="/dashboard/new-document"
-                                                    className={styles.userDropdownItem}
-                                                    role="menuitem"
-                                                    tabIndex="-1"
-                                                    id="user-menu-item-1">
-                                                    Adaugă Document
-                                                </Link>
-                                            )}
+                                            <Link
+                                                to="/register"
+                                                className={styles.userDropdownItem}
+                                                role="menuitem"
+                                                tabIndex="-1"
+                                                id="user-menu-item-1">
+                                                Adaugă Utilizator
+                                            </Link>
+                                            <Link
+                                                to="/dashboard/new-document"
+                                                className={styles.userDropdownItem}
+                                                role="menuitem"
+                                                tabIndex="-1"
+                                                id="user-menu-item-1">
+                                                Adaugă Document
+                                            </Link>
 
                                             <button
                                                 className={`${styles.userDropdownItem} ${styles.logout}`}
