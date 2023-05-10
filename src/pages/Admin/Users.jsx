@@ -20,7 +20,7 @@ function Users() {
         const getUsers = async (token) => {
             if (token) {
                 try {
-                    const { data } = await publicRequest.get('/users/getUsers', {
+                    const { data } = await publicRequest.get('/users/get', {
                         headers: { 'x-auth-token': `${token}` },
                     });
                     setUsers(data.reverse());

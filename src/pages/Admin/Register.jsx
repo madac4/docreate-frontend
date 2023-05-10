@@ -1,20 +1,21 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+import { useParams, useNavigate } from 'react-router-dom';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { publicRequest } from '../../helpers/instance';
-import Dashboard from './Dashboard';
 import ButtonLoader from '../../components/ButtonLoader';
+import Layout from '../../components/Layout';
 
 function Register() {
     const [loading, setLoading] = React.useState(false);
     const [showPassword, setShowPassword] = React.useState(false);
-    const { token } = useSelector((state) => state.auth);
+    const { token } = useParams();
+    const navigate = useNavigate();
     const [register, setRegister] = React.useState({
         name: '',
         email: '',
         password: '',
-        organization: '',
     });
 
     function handleCheckboxChange() {
@@ -26,6 +27,17 @@ function Register() {
         setRegister({ ...register, [name]: value });
     };
 
+    React.useEffect(() => {
+        const getRegisterEmail = async (token) => {
+            const { data } = await publicRequest.get(`/auth/register/${token}`, {
+                headers: { 'x-auth-token': `${token}` },
+            });
+            setRegister({ email: data });
+        };
+
+        getRegisterEmail(token);
+    }, [token]);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
@@ -35,22 +47,24 @@ function Register() {
             });
             data && toast.success('Utilizatorul a fost creat cu succes');
             setLoading(false);
+            navigate('/');
+            setRegister({ name: '', email: '', password: '' });
         } catch (error) {
             console.error(error);
             toast.error('Ceva a mers gresit');
             setLoading(false);
+            setRegister({ name: '', email: '', password: '' });
         }
-        setRegister({ name: '', email: '', password: '', organization: '' });
     };
 
     return (
-        <Dashboard pageTitle="Adaugă Utilizator">
-            <section className="dark:dark:bg-gray-900 px-4 sm:px-6 lg:px-8">
+        <Layout>
+            <section className="dark:dark:bg-gray-900 px-4 sm:px-6 lg:px-8 h-screen pt-36">
                 <form
                     action="#"
                     method="post"
                     onSubmit={handleSubmit}
-                    className="flex flex-col mt-5 max-w-xl w-full mx-auto gap-5">
+                    className="flex flex-col max-w-xl w-full mx-auto gap-5">
                     <label className="form-label">
                         Nume/Prenume
                         <input
@@ -68,16 +82,6 @@ function Register() {
                             type="email"
                             name="email"
                             value={register.email}
-                            onChange={handleChange}
-                            className="auth-input"
-                        />
-                    </label>
-                    <label className="form-label">
-                        Organizația
-                        <input
-                            type="text"
-                            name="organization"
-                            value={register.organization}
                             onChange={handleChange}
                             className="auth-input"
                         />
@@ -113,7 +117,7 @@ function Register() {
                     <ButtonLoader isLoading={loading}>Crează cont</ButtonLoader>
                 </form>
             </section>
-        </Dashboard>
+        </Layout>
     );
 }
 

@@ -133,6 +133,14 @@ function Dashboard({ children, logOut, pageTitle }) {
                                                 Adaugă Utilizator
                                             </Link>
                                             <Link
+                                                to="/invite"
+                                                className={styles.userDropdownItem}
+                                                role="menuitem"
+                                                tabIndex="-1"
+                                                id="user-menu-item-1">
+                                                Invită Persoană
+                                            </Link>
+                                            <Link
                                                 to="/dashboard/new-document"
                                                 className={styles.userDropdownItem}
                                                 role="menuitem"
@@ -232,6 +240,10 @@ function Dashboard({ children, logOut, pageTitle }) {
 
                                 <Link to="/register" className={styles.menuItemMobile}>
                                     Adaugă Utilizator
+                                </Link>
+
+                                <Link to="/invite" className={styles.menuItemMobile}>
+                                    Invită Coleg
                                 </Link>
 
                                 <Link

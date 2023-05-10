@@ -38,10 +38,7 @@ const App = () => {
                                 path={Routing.Dashboard.path}
                                 element={Routing.Dashboard.element}
                             />
-                            <Route
-                                path={Routing.Register.path}
-                                element={Routing.Register.element}
-                            />
+
                             <Route
                                 path={Routing.Document.path}
                                 element={Routing.Document.element}
@@ -58,6 +55,7 @@ const App = () => {
                                 path={Routing.DocsList.path}
                                 element={Routing.DocsList.element}
                             />
+                            <Route path={Routing.Invite.path} element={Routing.Invite.element} />
                         </Routes>
                     ) : (
                         <Routes>
@@ -76,6 +74,10 @@ const App = () => {
                             <Route
                                 path={Routing.ResetPassword.path}
                                 element={Routing.ResetPassword.element}
+                            />
+                            <Route
+                                path={Routing.Register.path}
+                                element={Routing.Register.element}
                             />
                         </Routes>
                     )}
