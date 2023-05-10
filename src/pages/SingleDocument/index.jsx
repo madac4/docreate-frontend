@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import FileViewer from 'react-file-viewer';
 
+import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import styles from './styles.module.scss';
 import { publicRequest } from '../../helpers/instance';
 import Layout from '../../components/Layout';
@@ -10,6 +11,7 @@ import { Loader } from '../../components/Loader';
 import ButtonLoader from '../../components/ButtonLoader';
 
 function SingleDocument() {
+    const [viewportWidth, setViewportWidth] = React.useState(window.innerWidth);
     const [inputValues, setInputValues] = React.useState({});
     const [loading, setLoading] = React.useState(false);
     const [html, setHtml] = React.useState('');
@@ -17,6 +19,18 @@ function SingleDocument() {
     const [element, setElement] = React.useState(null);
     const { token } = useSelector((state) => state.auth);
     const { slug } = useParams();
+
+    React.useEffect(() => {
+        function handleResize() {
+            setViewportWidth(window.innerWidth);
+        }
+
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     React.useEffect(() => {
         const getDocument = async (slug) => {
@@ -35,25 +49,31 @@ function SingleDocument() {
 
     React.useEffect(() => {
         const getInitialDocument = async (element) => {
-            try {
-                if (element && element._id) {
-                    const { data } = await publicRequest.get(`/documents/getfile/${element._id}`, {
-                        responseType: 'blob',
-                    });
-                    const url = URL.createObjectURL(data);
-                    setUrl(url);
-                    setLoading(false);
-                    setHtml('');
-                    setTimeout(() => {
-                        setHtml(<FileViewer fileType={'docx'} filePath={url} />);
-                    }, 200);
+            if (viewportWidth > 766) {
+                try {
+                    if (element && element._id) {
+                        const { data } = await publicRequest.get(
+                            `/documents/getfile/${element._id}`,
+                            {
+                                responseType: 'blob',
+                                headers: { 'x-auth-token': token },
+                            },
+                        );
+                        const url = URL.createObjectURL(data);
+                        setUrl(url);
+                        setLoading(false);
+                        setHtml('');
+                        setTimeout(() => {
+                            setHtml(<FileViewer fileType={'docx'} filePath={url} />);
+                        }, 200);
+                    }
+                } catch (error) {
+                    console.log(error);
                 }
-            } catch (error) {
-                console.log(error);
             }
         };
         getInitialDocument(element && element);
-    }, [element]);
+    }, [element, token, viewportWidth]);
 
     const getDoc = async (event) => {
         event.preventDefault();
@@ -62,13 +82,26 @@ function SingleDocument() {
             const { data } = await publicRequest.get(`/documents/getfile/${element._id}`, {
                 responseType: 'blob',
                 params: inputValues,
+                headers: { 'x-auth-token': token },
             });
             const url = URL.createObjectURL(data);
             setUrl(url);
             setLoading(false);
             setHtml('');
             setTimeout(() => {
-                setHtml(<FileViewer fileType={'docx'} filePath={url} />);
+                if (viewportWidth > 766) {
+                    setHtml(<FileViewer fileType={'docx'} filePath={url} />);
+                } else {
+                    setHtml(
+                        <a
+                            href={url}
+                            download={slug}
+                            className="button-primary w-full text-center justify-center py-4 mt-10">
+                            <ArrowDownTrayIcon className="h-6 w-6" />
+                            Descarcă Documentul
+                        </a>,
+                    );
+                }
             }, 200);
         } catch (error) {
             console.log(error);
@@ -83,7 +116,8 @@ function SingleDocument() {
                 <div className={styles.liveDocument}>
                     <div className={styles.liveDocument__editor}>
                         <h2 className="font-bold text-2xl text-gray-900 dark:text-gray-300 mb-8">
-                            Complecatați câmpurile de mai jos {element.name && element.name}
+                            Complecatați câmpurile de mai jos pentru completarea documentului:{' '}
+                            {element.name && element.name}
                         </h2>
                         <form action="#" onSubmit={getDoc} method="GET">
                             <div className={styles.fields}>
@@ -136,6 +170,7 @@ function SingleDocument() {
                                     )}
                             </div>
                             <ButtonLoader isLoading={loading}>Generează Document</ButtonLoader>
+                            {url.length > 0 && viewportWidth < 767 && html}
                         </form>
                     </div>
                     <div className={styles.liveDocument__body}>
@@ -146,6 +181,7 @@ function SingleDocument() {
                                     href={url}
                                     download={slug}
                                     className="button-primary w-full text-center justify-center py-4">
+                                    <ArrowDownTrayIcon className="h-6 w-6" />
                                     Descarcă Documentul
                                 </a>
                             </>

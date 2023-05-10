@@ -140,7 +140,6 @@ function Dashboard({ children, logOut, pageTitle }) {
                                                 id="user-menu-item-1">
                                                 Adaugă Document
                                             </Link>
-
                                             <button
                                                 className={`${styles.userDropdownItem} ${styles.logout}`}
                                                 onClick={logout}
@@ -173,28 +172,36 @@ function Dashboard({ children, logOut, pageTitle }) {
                 {burger && (
                     <div className="md:hidden" id="mobile-menu">
                         <div className="space-y-1 px-2 pt-2 pb-3 sm:px-3">
-                            <a
-                                href="/"
-                                className={`${styles.menuItemMobile} ${styles.current}`}
+                            <NavLink
+                                to="/dashboard"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? `${styles.menuItemMobile} ${styles.current}`
+                                        : `${styles.menuItemMobile}`
+                                }
+                                end
                                 aria-current="page">
                                 Dashboard
-                            </a>
+                            </NavLink>
 
-                            <a href="/" className={`${styles.menuItemMobile}`}>
-                                Team
-                            </a>
-
-                            <a href="/" className={`${styles.menuItemMobile}`}>
-                                Projects
-                            </a>
-
-                            <a href="/" className={`${styles.menuItemMobile}`}>
-                                Calendar
-                            </a>
-
-                            <a href="/" className={`${styles.menuItemMobile}`}>
-                                Reports
-                            </a>
+                            <NavLink
+                                to="/dashboard/users"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? `${styles.menuItemMobile} ${styles.current}`
+                                        : `${styles.menuItemMobile}`
+                                }>
+                                Lista de utilizatori
+                            </NavLink>
+                            <NavLink
+                                to="/dashboard/documents"
+                                className={({ isActive }) =>
+                                    isActive
+                                        ? `${styles.menuItemMobile} ${styles.current}`
+                                        : `${styles.menuItemMobile}`
+                                }>
+                                Lista de documente
+                            </NavLink>
                         </div>
                         <div className="border-t border-gray-700 pt-4 pb-3">
                             <div className="flex items-center px-5">
@@ -223,9 +230,15 @@ function Dashboard({ children, logOut, pageTitle }) {
                                     Your Profile
                                 </a>
 
-                                <a href="/" className={`${styles.menuItemMobile}`}>
-                                    Settings
-                                </a>
+                                <Link to="/register" className={styles.menuItemMobile}>
+                                    Adaugă Utilizator
+                                </Link>
+
+                                <Link
+                                    to="/dashboard/new-document"
+                                    className={styles.menuItemMobile}>
+                                    Adaugă Document
+                                </Link>
 
                                 <button
                                     onClick={logout}
@@ -247,7 +260,7 @@ function Dashboard({ children, logOut, pageTitle }) {
             </header>
 
             <main className="pt-10 dark:bg-gray-900 min-h-screen">
-                <div className="mx-auto max-w-7xl">{children}</div>
+                <div className="mx-auto max-w-7xl px-4">{children}</div>
             </main>
         </div>
     );

@@ -8,7 +8,7 @@ function ButtonLoader({ children, isLoading, classNames }) {
                 classNames ? classNames : 'button-primary py-3 mt-3 w-full justify-center relative'
             }
             type="submit">
-            {isLoading ? <Loading size={24}></Loading> : children}
+            {isLoading ? <Loading size={24} /> : children}
         </button>
     );
 }

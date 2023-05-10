@@ -22,9 +22,9 @@ export default function Layout({ children }) {
                             className="flex-1 font-semibold sm:text-lg text-sm dark:text-white">
                             doCreator
                         </Link>
-                        <button>
+                        {/* <button>
                             <BellIcon className="w-6 h-6 text-gray-400 hover:text-gray-900 transition-colors dark:hover:text-white"></BellIcon>
-                        </button>
+                        </button> */}
 
                         {auth.isAuth ? (
                             <Link className="button-primary" to="/documents">

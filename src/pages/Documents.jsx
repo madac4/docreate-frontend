@@ -1,9 +1,7 @@
 import React from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
-
-import { publicRequest } from '../helpers/instance';
+import { getDocumentList } from '../helpers/instance';
 
 import Document from '../components/Document';
 import Layout from '../components/Layout';
@@ -27,25 +25,11 @@ function Documents() {
     };
 
     React.useEffect(() => {
-        const getDocumentList = async (token) => {
-            if (token) {
-                try {
-                    const { data } = await publicRequest.get('/documents', {
-                        headers: { 'x-auth-token': `${token}` },
-                    });
-                    setDocuments(data.reverse());
-                } catch (error) {
-                    console.log(error);
-                    toast.error(error.message);
-                }
-            } else {
-                toast.error('Nu sunteți logat');
-            }
-        };
-        getDocumentList(token);
+        getDocumentList(token)
+            .then((data) => setDocuments(data))
+            .catch((error) => console.log(error));
     }, [token]);
 
-    console.log(documents);
     return (
         <Layout>
             <div className="container mx-auto pt-3 px-3 sm:px-0 h-screen pt-28">

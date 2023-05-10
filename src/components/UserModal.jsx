@@ -30,7 +30,7 @@ function UserModal({ user, isOpen, setIsOpen, token }) {
                 setUpdatedUser({ name: '', email: '', password: '' });
             } catch (error) {
                 console.log(error);
-                toast.error('Utilizatorul nu a fost modificat');
+                toast.error('Utilizatorul nu a putut fi modificat');
                 setLoading(false);
             }
         } else {

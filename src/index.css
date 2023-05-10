@@ -67,6 +67,18 @@ main {
 .with-aside {
     grid-template-columns: 1fr 420px;
 }
+
+@media (max-width: 992px) {
+    .with-aside {
+        grid-template-columns: 1fr 320px;
+    }
+}
+@media (max-width: 767px) {
+    .with-aside {
+        grid-template-columns: 1fr;
+        padding: 30px 15px;
+    }
+}
 .with-aside form {
     padding-bottom: 30px;
 }

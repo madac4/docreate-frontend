@@ -18,6 +18,7 @@ function DocumentModal({ document, isOpen, setIsOpen, token }) {
         const formData = new FormData();
         formData.append('file', newDocument.file);
         formData.append('name', newDocument.name);
+
         if (newDocument.file || newDocument.name) {
             try {
                 const { data } = await publicRequest.put(
@@ -28,13 +29,19 @@ function DocumentModal({ document, isOpen, setIsOpen, token }) {
                     },
                 );
                 document = data;
-                toast.success('Documentul a fost modificat cu succes');
+                if (newDocument.file && !newDocument.name) {
+                    toast.success('Fișierul a fost modificat cu succes');
+                } else if (newDocument.name && !newDocument.file) {
+                    toast.success('Numele a fost modificat cu succes');
+                } else {
+                    toast.success('Datele au fost modificate cu succes');
+                }
                 setLoading(false);
                 setIsOpen(false);
                 setNewDocument({ name: '', file: '' });
             } catch (error) {
                 console.log(error);
-                toast.error('Documentul nu a fost modificat');
+                toast.error('Documentul nu a putut fi modificat');
                 setLoading(false);
             }
         } else {
@@ -68,62 +75,65 @@ function DocumentModal({ document, isOpen, setIsOpen, token }) {
                                     htmlFor="name"
                                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                     Numele
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        value={newDocument.name}
+                                        onChange={(e) =>
+                                            setNewDocument({ ...newDocument, name: e.target.value })
+                                        }
+                                        id="name"
+                                        className="bg-gray-50 mt-1 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                                        placeholder="Titlul Documentului"
+                                    />
                                 </label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value={newDocument.name}
-                                    onChange={(e) =>
-                                        setNewDocument({ ...newDocument, name: e.target.value })
-                                    }
-                                    id="name"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                                    placeholder="Numele"
-                                />
                             </div>
                             <div>
                                 <label
                                     htmlFor="email"
                                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                    Fișierul
+                                    Fișierul nou
+                                    <Dropzone
+                                        onDrop={(acceptedFiles) =>
+                                            setNewDocument({
+                                                ...newDocument,
+                                                file: acceptedFiles[0],
+                                            })
+                                        }>
+                                        {({ getRootProps, getInputProps }) => (
+                                            <div
+                                                className="flex items-start flex-col justify-center w-full mt-1"
+                                                {...getRootProps()}>
+                                                <label
+                                                    htmlFor="dropzone-file"
+                                                    className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                        <ArrowUpTrayIcon className="w-10 mb-3 h-10 text-gray-400 dark:hover:text-white" />
+                                                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+                                                            <span className="font-semibold">
+                                                                Click to upload
+                                                            </span>{' '}
+                                                            or drag and drop
+                                                        </p>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                            DOCX or PDF (MAX. 16MB)
+                                                        </p>
+                                                    </div>
+                                                    <input
+                                                        id="dropzone-file"
+                                                        type="file"
+                                                        className="hidden"
+                                                        name="file"
+                                                        {...getInputProps()}
+                                                    />
+                                                </label>
+                                                <h4 className="text-gray-800 dark:text-white font-semibold mt-2">
+                                                    {newDocument.file && newDocument.file.name}
+                                                </h4>
+                                            </div>
+                                        )}
+                                    </Dropzone>
                                 </label>
-                                <Dropzone
-                                    onDrop={(acceptedFiles) =>
-                                        setNewDocument({ ...newDocument, file: acceptedFiles[0] })
-                                    }>
-                                    {({ getRootProps, getInputProps }) => (
-                                        <div
-                                            className="flex items-start flex-col justify-center w-full"
-                                            {...getRootProps()}>
-                                            <label
-                                                htmlFor="dropzone-file"
-                                                className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                    <ArrowUpTrayIcon className="w-10 mb-3 h-10 text-gray-400 dark:hover:text-white" />
-                                                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                                                        <span className="font-semibold">
-                                                            Click to upload
-                                                        </span>{' '}
-                                                        or drag and drop
-                                                    </p>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                        DOCX or PDF (MAX. 16MB)
-                                                    </p>
-                                                </div>
-                                                <input
-                                                    id="dropzone-file"
-                                                    type="file"
-                                                    className="hidden"
-                                                    name="file"
-                                                    {...getInputProps()}
-                                                />
-                                            </label>
-                                            <h4 className="text-gray-800 dark:text-white font-semibold mt-2">
-                                                {newDocument.file && newDocument.file.name}
-                                            </h4>
-                                        </div>
-                                    )}
-                                </Dropzone>
                             </div>
                             <ButtonLoader isLoading={loading}>Modifică documentul</ButtonLoader>
                         </form>
