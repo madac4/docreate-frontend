@@ -1,9 +1,9 @@
 import React from 'react';
 import { XMarkIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 import Dropzone from 'react-dropzone';
-import { publicRequest } from '../helpers/instance';
+import { publicRequest } from '../../helpers/instance';
 import { toast } from 'react-toastify';
-import ButtonLoader from './ButtonLoader';
+import ButtonLoader from '../buttons/ButtonLoader';
 
 function DocumentModal({ document, isOpen, setIsOpen, token }) {
     const [newDocument, setNewDocument] = React.useState({ name: '', file: '' });

@@ -1,7 +1,7 @@
 import React from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import ButtonLoader from './ButtonLoader';
-import { publicRequest } from '../helpers/instance';
+import ButtonLoader from '../buttons/ButtonLoader';
+import { publicRequest } from '../../helpers/instance';
 import { toast } from 'react-toastify';
 
 function ForgetModal({ openModal, setModal }) {
@@ -64,9 +64,7 @@ function ForgetModal({ openModal, setModal }) {
                                     required
                                 />
                             </div>
-                            <ButtonLoader
-                                isLoading={loading}
-                                classNames="button-primary w-full text-center justify-center text-sm font-medium">
+                            <ButtonLoader isLoading={loading} classNames="w-full">
                                 Resetează parola
                             </ButtonLoader>
                         </form>

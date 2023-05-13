@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import styles from '../components/styles/buttons.module.scss';
+
 function NotFound() {
     return (
         <>
@@ -12,9 +14,7 @@ function NotFound() {
                         Uh-oh!
                     </p>
                     <p className="mt-4 text-gray-500">Această pagină nu există.</p>
-                    <Link
-                        to="/"
-                        className="inline-block px-5 py-3 mt-6 text-sm font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700 focus:outline-none focus:ring">
+                    <Link to="/" className={`${styles.buttonPrimary} mt-4`}>
                         Înapoi acasă
                     </Link>
                 </div>

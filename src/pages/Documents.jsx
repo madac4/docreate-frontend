@@ -3,9 +3,10 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { useSelector } from 'react-redux';
 import { getDocumentList } from '../helpers/instance';
 
-import Document from '../components/Document';
+import Document from '../components/buttons/Document';
 import Layout from '../components/Layout';
-import { Loader } from '../components/Loader';
+import { Loader } from '../components/buttons/Loader';
+import Input from '../components/forms/Input';
 
 function Documents() {
     const [searchValue, setSearchValue] = React.useState('');
@@ -32,20 +33,24 @@ function Documents() {
 
     return (
         <Layout>
-            <div className="container mx-auto pt-3 px-3 sm:px-0 h-screen pt-28">
-                <div className="search relative">
-                    <input
-                        onChange={handleSearch}
-                        type="search"
-                        id="searchInput"
-                        placeholder="Caută"
-                        className="input-style"
-                    />
+            <div className="container">
+                {searchValue &&
+                documents.filter((item) =>
+                    item.name.toUpperCase().includes(searchValue.toUpperCase()),
+                ).length <= 0 ? (
+                    <h3 className="text-center py-8">Nu a fost găsit nici un document</h3>
+                ) : (
+                    <h3 className="text-center py-8">
+                        Alege un document din lista de mai jos pentru a-l completa
+                    </h3>
+                )}
 
+                <Input onChange={handleSearch} placeholder="Caută">
                     <span className="pointer-events-none absolute inset-y-0 right-0 grid w-10 place-content-center dark:text-white text-gray-900">
                         <MagnifyingGlassIcon className="w-5 h-5" />
                     </span>
-                </div>
+                </Input>
+
                 {documents && documents.length > 0 ? (
                     <div className="documents-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-8 md:mt-12">
                         {documents
@@ -59,14 +64,6 @@ function Documents() {
                 ) : (
                     <Loader size={24} />
                 )}
-                {searchValue &&
-                    documents.filter((item) =>
-                        item.name.toUpperCase().includes(searchValue.toUpperCase()),
-                    ).length <= 0 && (
-                        <h1 className="dark:text-gray-300 mt-12 md:mt-8 text-gray-900 text-center md:text-4xl text-2xl font-bold">
-                            Nu a fost găsit nici un document
-                        </h1>
-                    )}
             </div>
         </Layout>
     );

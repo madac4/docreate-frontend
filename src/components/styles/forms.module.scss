@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.input {
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-3;
+    border-radius: 8px !important;
+}
+
+.label {
+    @apply block mb-2 text-sm font-medium text-gray-900;
+}
+
+//? DARK MODE
+
+:global(.dark) .label {
+    @apply text-white;
+}
+:global(.dark) .input {
+    @apply bg-gray-600 border-gray-500 placeholder-gray-400 text-white;
+}
+:global(.dark) .searchInput {
+    @apply bg-gray-600 border-gray-500 placeholder-gray-400 text-white;
+}

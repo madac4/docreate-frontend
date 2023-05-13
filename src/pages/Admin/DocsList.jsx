@@ -4,8 +4,8 @@ import Dashboard from './Dashboard';
 import styles from './style.module.scss';
 import { publicRequest } from '../../helpers/instance';
 import { useSelector } from 'react-redux';
-import { Loader } from '../../components/Loader';
-import DocumentModal from '../../components/DocumentModal';
+import { Loader } from '../../components/buttons/Loader';
+import DocumentModal from '../../components/modals/DocumentModal';
 
 function DocsList() {
     const [documents, setDocuments] = React.useState([]);

@@ -3,8 +3,8 @@ import { toast } from 'react-toastify';
 import { XMarkIcon, EyeSlashIcon, EyeIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 
-import ButtonLoader from './ButtonLoader';
-import { publicRequest } from '../helpers/instance';
+import ButtonLoader from '../buttons/ButtonLoader';
+import { publicRequest } from '../../helpers/instance';
 
 function ResetModal({ token }) {
     const [loading, setLoading] = React.useState(false);

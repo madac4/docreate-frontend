@@ -1,8 +1,8 @@
 import React from 'react';
 import { XMarkIcon, EyeSlashIcon, EyeIcon } from '@heroicons/react/24/outline';
-import { publicRequest } from '../helpers/instance';
+import { publicRequest } from '../../helpers/instance';
 import { toast } from 'react-toastify';
-import ButtonLoader from './ButtonLoader';
+import ButtonLoader from '../buttons/ButtonLoader';
 
 function UserModal({ user, isOpen, setIsOpen, token }) {
     const [updatedUser, setUpdatedUser] = React.useState({ name: '', email: '', password: '' });

@@ -1,10 +1,9 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useParams, useNavigate } from 'react-router-dom';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { publicRequest } from '../../helpers/instance';
-import ButtonLoader from '../../components/ButtonLoader';
+import ButtonLoader from '../../components/buttons/ButtonLoader';
 import Layout from '../../components/Layout';
 
 function Register() {

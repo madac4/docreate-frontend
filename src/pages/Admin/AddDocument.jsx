@@ -6,7 +6,7 @@ import { ArrowUpTrayIcon, PlusCircleIcon } from '@heroicons/react/24/outline';
 
 import { publicRequest } from '../../helpers/instance';
 import Dashboard from './Dashboard';
-import ButtonLoader from '../../components/ButtonLoader';
+import ButtonLoader from '../../components/buttons/ButtonLoader';
 
 function AddDocument() {
     const [file, setFile] = React.useState({

@@ -15,6 +15,11 @@ const App = () => {
         store.dispatch(loadUser(token));
     }, [token]);
 
+    React.useEffect(() => {
+        const isDark = localStorage.getItem('isDarkMode') === 'true';
+        document.body.classList.toggle('dark', isDark);
+    }, []);
+
     return (
         <>
             <div className="h-screen">

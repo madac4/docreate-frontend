@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '../components/Layout';
 import { useParams } from 'react-router-dom';
-import ResetModal from '../components/ResetModal';
+import ResetModal from '../components/modals/ResetModal';
 
 function Home() {
     const { token } = useParams();

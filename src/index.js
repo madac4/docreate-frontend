@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { store, persistor } from './redux/store';
+// import 'flowbite';
 
 import App from './App';
 import './index.css';

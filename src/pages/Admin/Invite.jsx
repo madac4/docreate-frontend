@@ -1,10 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { publicRequest } from '../../helpers/instance';
 import Dashboard from './Dashboard';
-import ButtonLoader from '../../components/ButtonLoader';
+import ButtonLoader from '../../components/buttons/ButtonLoader';
 
 function Register() {
     const [loading, setLoading] = React.useState(false);

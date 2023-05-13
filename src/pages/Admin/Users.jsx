@@ -4,8 +4,8 @@ import { toast } from 'react-toastify';
 import Dashboard from './Dashboard';
 import styles from './style.module.scss';
 import { publicRequest } from '../../helpers/instance';
-import { Loader } from '../../components/Loader';
-import UserModal from '../../components/UserModal';
+import { Loader } from '../../components/buttons/Loader';
+import UserModal from '../../components/modals/UserModal';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 function Users() {

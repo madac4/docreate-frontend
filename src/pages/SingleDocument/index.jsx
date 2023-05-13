@@ -7,8 +7,8 @@ import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 import styles from './styles.module.scss';
 import { publicRequest } from '../../helpers/instance';
 import Layout from '../../components/Layout';
-import { Loader } from '../../components/Loader';
-import ButtonLoader from '../../components/ButtonLoader';
+import { Loader } from '../../components/buttons/Loader';
+import ButtonLoader from '../../components/buttons/ButtonLoader';
 
 function SingleDocument() {
     const [viewportWidth, setViewportWidth] = React.useState(window.innerWidth);

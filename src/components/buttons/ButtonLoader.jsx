@@ -1,13 +1,13 @@
 import React from 'react';
 import { Loading } from './Loader';
+import styles from '../styles/buttons.module.scss';
 
 function ButtonLoader({ children, isLoading, classNames }) {
     return (
         <button
             className={
-                classNames ? classNames : 'button-primary py-3 mt-3 w-full justify-center relative'
-            }
-            type="submit">
+                classNames ? `${classNames} ${styles.buttonPrimary}` : `${styles.buttonPrimary}`
+            }>
             {isLoading ? <Loading size={24} /> : children}
         </button>
     );
