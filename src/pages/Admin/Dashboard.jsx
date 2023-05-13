@@ -6,14 +6,12 @@ import {
     EyeIcon,
 } from '@heroicons/react/24/outline';
 import { Link, useNavigate, NavLink } from 'react-router-dom';
-import styles from './style.module.scss';
-import { useSelector, connect } from 'react-redux';
-import { logOut } from '../../redux/api';
+import { useSelector } from 'react-redux';
 import ThemeToggle from '../../components/buttons/ThemeToggle';
+import UserDropdown from '../../components/dashboard/UserDropdown';
 
-function Dashboard({ children, logOut }) {
+export default function Dashboard({ children }) {
     const [dropdown, setDropdown] = React.useState({
-        user: false,
         notifications: false,
         burger: false,
     });
@@ -31,10 +29,6 @@ function Dashboard({ children, logOut }) {
         }
     }, [isAuth, navigate]);
 
-    const logout = () => {
-        logOut();
-        navigate('/');
-    };
     return (
         // <div className="min-h-full">
         //     <nav className="dark:bg-gray-800 bg-zinc-100">
@@ -278,7 +272,7 @@ function Dashboard({ children, logOut }) {
                             onClick={() =>
                                 setDropdown({
                                     notifications: false,
-                                    user: false,
+                                    user: !dropdown.user,
                                     burger: !dropdown.burger,
                                 })
                             }
@@ -352,58 +346,19 @@ function Dashboard({ children, logOut }) {
                         </div>
 
                         {user && (
-                            <>
-                                <button
-                                    type="button"
-                                    onClick={() =>
-                                        setDropdown({ notifications: false, user: !dropdown.user })
-                                    }
-                                    className="flex mx-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
-                                    <span className="sr-only">Open user menu</span>
-                                    <img
-                                        className="w-8 h-8 rounded-full"
-                                        src={user.profilePicture}
-                                        alt={user.name}
-                                    />
-                                </button>
-
-                                <div
-                                    className={`${
-                                        dropdown.user ? 'block' : 'hidden'
-                                    } absolute top-full right-0 z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl`}>
-                                    <div className="py-3 px-4">
-                                        <span className="block text-sm font-semibold text-gray-900 dark:text-white">
-                                            {user.name}
-                                        </span>
-                                        <span className="block text-sm text-gray-900 truncate dark:text-white">
-                                            {user.email}
-                                        </span>
-                                    </div>
-                                    <ul
-                                        className="py-1 text-gray-700 dark:text-gray-300"
-                                        aria-labelledby="dropdown">
-                                        <li>
-                                            <Link
-                                                to="#"
-                                                className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">
-                                                Profilul meu
-                                            </Link>
-                                        </li>
-                                    </ul>
-                                    <ul className="text-gray-700 py-1 dark:text-gray-300">
-                                        <li>
-                                            <button
-                                                className={`${styles.userDropdownItem} ${styles.logout} rounded-b-xl`}
-                                                onClick={logout}
-                                                role="menuitem"
-                                                tabIndex="-1"
-                                                id="user-menu-item-2">
-                                                Ieși din cont
-                                            </button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </>
+                            <UserDropdown user={user}>
+                                <ul
+                                    className="py-1 text-gray-700 dark:text-gray-300"
+                                    aria-labelledby="dropdown">
+                                    <li>
+                                        <Link
+                                            to="#"
+                                            className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">
+                                            Profilul meu
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </UserDropdown>
                         )}
                     </div>
                 </div>
@@ -458,5 +413,3 @@ function Dashboard({ children, logOut }) {
         </div>
     );
 }
-
-export default connect(null, { logOut })(Dashboard);

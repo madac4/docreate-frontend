@@ -7,6 +7,7 @@ import ButtonLoader from '../buttons/ButtonLoader';
 import ForgetModal from './ForgetModal';
 import PasswordInput from '../forms/PasswordInput';
 import Input from '../forms/Input';
+import LoginForm from '../forms/LoginForm';
 
 function LoginModal({ openModal, setModal }) {
     const [loading, setLoading] = React.useState(false);
@@ -56,33 +57,17 @@ function LoginModal({ openModal, setModal }) {
                             <span className="sr-only">Close modal</span>
                         </button>
 
-                        <div className="px-6 py-6 lg:px-8">
+                        <div className="px-6 pt-10 pb-6 lg:px-8">
                             <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
                                 Autentificăte pe platformă
                             </h3>
-                            <form className="space-y-6" onSubmit={handleSubmit}>
-                                <Input
-                                    value={auth.email}
-                                    onChange={(e) => setAuth({ ...auth, email: e.target.value })}
-                                    placeholder="name@company.com"
-                                    type="email"
-                                    label="Email"
-                                />
-
-                                <PasswordInput
-                                    value={auth.password}
-                                    setAuth={(e) => setAuth({ ...auth, password: e.target.value })}
-                                />
-                                <button
-                                    type="button"
-                                    onClick={forgetPassword}
-                                    className="text-sm text-blue-700 hover:underline dark:text-blue-500 flex justify-end w-full">
-                                    Lost Password?
-                                </button>
-                                <ButtonLoader isLoading={loading} classNames="w-full">
-                                    Intră în profil
-                                </ButtonLoader>
-                            </form>
+                            <LoginForm
+                                handleSubmit={handleSubmit}
+                                auth={auth}
+                                loading={loading}
+                                forgetPassword={forgetPassword}
+                                setAuth={setAuth}
+                            />
                         </div>
                     </div>
                 </div>

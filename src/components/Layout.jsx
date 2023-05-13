@@ -6,9 +6,10 @@ import { useSelector } from 'react-redux';
 import LoginModal from '../components/modals/LoginModal';
 import styles from './styles/buttons.module.scss';
 import ThemeToggle from './buttons/ThemeToggle';
+import UserDropdown from './dashboard/UserDropdown';
 
-export default function Layout({ children }) {
-    const auth = useSelector((state) => state.auth);
+export default function Layout({ children, logOut }) {
+    const { user, isAuth } = useSelector((state) => state.auth);
     const [modal, setModal] = React.useState(false);
     const location = useLocation();
 
@@ -27,7 +28,7 @@ export default function Layout({ children }) {
                             </span>
                         </Link>
                         <div className="flex items-center lg:order-2">
-                            {auth.isAuth ? (
+                            {isAuth ? (
                                 <Link className={styles.buttonPrimary} to="/documents">
                                     <span className="text-sm font-medium"> Creează document </span>
                                     <DocumentPlusIcon className="w-5 h-5"></DocumentPlusIcon>
@@ -38,20 +39,21 @@ export default function Layout({ children }) {
                                 </button>
                             )}
 
-                            <ThemeToggle></ThemeToggle>
-                            {auth.isAuth && auth.user && (
-                                <>
-                                    <Link
-                                        to={'/dashboard'}
-                                        className="block shrink-0 border rounded-full">
-                                        <span className="sr-only">Profile</span>
-                                        <img
-                                            alt="Man"
-                                            src={auth.user.profilePicture}
-                                            className="md:h-9 md:w-9 w-8 h-8 rounded-full object-cover"
-                                        />
-                                    </Link>
-                                </>
+                            <ThemeToggle />
+                            {isAuth && user && (
+                                <UserDropdown user={user}>
+                                    <ul
+                                        className="py-1 text-gray-700 dark:text-gray-300"
+                                        aria-labelledby="dropdown">
+                                        <li>
+                                            <Link
+                                                to="/dashboard"
+                                                className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">
+                                                Dashboard
+                                            </Link>
+                                        </li>
+                                    </ul>
+                                </UserDropdown>
                             )}
                         </div>
                     </div>
