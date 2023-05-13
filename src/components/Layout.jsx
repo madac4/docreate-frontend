@@ -3,7 +3,7 @@ import { DocumentPlusIcon } from '@heroicons/react/24/outline';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import LoginModal from '../components/modals/LoginModal';
+import LoginModal from './modals/LoginModal';
 import styles from './styles/buttons.module.scss';
 import ThemeToggle from './buttons/ThemeToggle';
 import UserDropdown from './dashboard/UserDropdown';

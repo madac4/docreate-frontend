@@ -2,18 +2,18 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Dashboard from './Dashboard';
-import styles from './style.module.scss';
 import { publicRequest } from '../../helpers/instance';
 import { Loader } from '../../components/buttons/Loader';
 import UserModal from '../../components/modals/UserModal';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
+import Table from '../../components/dashboard/Table';
+import InviteModal from '../../components/modals/InviteModal';
 
 function Users() {
-    const [searchValue, setSearchValue] = React.useState('');
+    const [searchResults, setSearchResults] = React.useState([]);
     const [users, setUsers] = React.useState([]);
     const [editUser, setEditUser] = React.useState({});
     const [userModal, setUserModal] = React.useState(false);
-    const [timer, setTimer] = React.useState(null);
     const { token } = useSelector((state) => state.auth);
 
     React.useEffect(() => {
@@ -42,7 +42,7 @@ function Users() {
                     toast.success('Utilizatorul a fost șters cu succes');
                     setTimeout(() => {
                         const deletedUsers = users.filter((user) => user._id !== id);
-                        setUsers(deletedUsers);
+                        setSearchResults(deletedUsers);
                     }, 300);
                 } catch (error) {
                     console.log(error);
@@ -56,19 +56,74 @@ function Users() {
         setEditUser(user);
     };
 
-    const handleSearch = (e) => {
-        clearTimeout(timer);
-
-        const newTimer = setTimeout(() => {
-            setSearchValue(e.target.value);
-        }, 200);
-
-        setTimer(newTimer);
+    const handleSearchResults = (results) => {
+        setSearchResults(results);
     };
 
     return (
-        <Dashboard pageTitle="Lista de utilizatori">
-            {searchValue &&
+        <Dashboard>
+            <Table data={users} onSearchResults={handleSearchResults}>
+                {!searchResults.length > 0 ? (
+                    <h4 className="text-center py-6">Nu a fost găsit nici un utilizator</h4>
+                ) : (
+                    <>
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-4 py-3">
+                                    Nr
+                                </th>
+                                <th scope="col" class="px-4 py-3">
+                                    Numele
+                                </th>
+                                <th scope="col" class="px-4 py-3">
+                                    Email
+                                </th>
+                                <th scope="col" class="px-4 py-3">
+                                    Rolul
+                                </th>
+                                <th scope="col" class="px-4 py-3 flex items-center justify-end">
+                                    Acțiuni
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {searchResults &&
+                                searchResults.map((item, index) => (
+                                    <tr class="border-b dark:border-gray-700" key={item._id}>
+                                        <th
+                                            scope="row"
+                                            class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {++index}
+                                        </th>
+                                        <th
+                                            scope="row"
+                                            class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            {item.name}
+                                        </th>
+                                        <td class="px-4 py-3">{item.email}</td>
+                                        <td class="px-4 py-3">{item.role}</td>
+                                        <td class="px-4 py-3 flex items-center justify-end gap-3">
+                                            <button
+                                                type="button"
+                                                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                                <PencilSquareIcon className="w-4 h-4 mr-2" />
+                                                Editează
+                                            </button>
+                                            <button
+                                                type="button"
+                                                onClick={() => deleteUser(item._id, item.name)}
+                                                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
+                                                <TrashIcon className="w-4 h-4 mr-2" />
+                                                Șterge
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                        </tbody>
+                    </>
+                )}
+            </Table>
+            {/* {searchValue &&
                 users.filter((user) => user.name.toLowerCase().includes(searchValue.toLowerCase()))
                     .length <= 0 && (
                     <h1 className="dark:text-gray-300 text-gray-900 mb-2 text-center text-2xl font-semibold">
@@ -172,7 +227,7 @@ function Users() {
                 </div>
             ) : (
                 <Loader />
-            )}
+            )} */}
         </Dashboard>
     );
 }
