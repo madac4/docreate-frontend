@@ -47,7 +47,7 @@ function LoginModal({ openModal, setModal }) {
     return (
         <>
             <div tabIndex="-1" className={openModal ? 'modal open' : 'modal'}>
-                <div className="w-full h-full max-w-md md:h-auto modal-body">
+                <div className="w-full h-full max-w-md md:h-auto modal-body px-3">
                     <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                         <button
                             type="button"

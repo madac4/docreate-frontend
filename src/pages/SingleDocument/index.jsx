@@ -9,6 +9,7 @@ import { publicRequest } from '../../helpers/instance';
 import Layout from '../../components/Layout';
 import { Loader } from '../../components/buttons/Loader';
 import ButtonLoader from '../../components/buttons/ButtonLoader';
+import buttons from '../../components/styles/buttons.module.scss';
 
 function SingleDocument() {
     const [viewportWidth, setViewportWidth] = React.useState(window.innerWidth);
@@ -96,7 +97,7 @@ function SingleDocument() {
                         <a
                             href={url}
                             download={slug}
-                            className="button-primary w-full text-center justify-center py-4 mt-10">
+                            className={`${buttons.buttonPrimary} py-3 w-full mt-4`}>
                             <ArrowDownTrayIcon className="h-6 w-6" />
                             Descarcă Documentul
                         </a>,
@@ -120,7 +121,7 @@ function SingleDocument() {
                             {element.name && element.name}
                         </h2>
                         <form action="#" onSubmit={getDoc} method="GET">
-                            <div className={styles.fields}>
+                            <div className={`${styles.fields} mb-5`}>
                                 {element &&
                                     element.inputs &&
                                     element.inputs.map((input, index) =>
@@ -169,7 +170,9 @@ function SingleDocument() {
                                         ),
                                     )}
                             </div>
-                            <ButtonLoader isLoading={loading}>Generează Document</ButtonLoader>
+                            <ButtonLoader isLoading={loading} classNames={'w-full py-3'}>
+                                Generează Document
+                            </ButtonLoader>
                             {url.length > 0 && viewportWidth < 767 && html}
                         </form>
                     </div>
@@ -180,7 +183,7 @@ function SingleDocument() {
                                 <a
                                     href={url}
                                     download={slug}
-                                    className="button-primary w-full text-center justify-center py-4">
+                                    className={`${buttons.buttonPrimary} py-3 w-full`}>
                                     <ArrowDownTrayIcon className="h-6 w-6" />
                                     Descarcă Documentul
                                 </a>

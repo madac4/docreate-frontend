@@ -1,18 +1,12 @@
 .liveDocument {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
-    height: 100vh;
-
-    @apply lg:grid-cols-2;
+    @apply lg:grid-cols-2 h-full md:h-screen;
     &__editor {
+        padding: 20px;
         @media (max-width: 1024px) {
             height: fit-content;
         }
-        @media (max-width: 767px) {
-            padding-top: 120px;
-        }
-        padding: 20px;
-        padding-top: 90px;
         .fields {
             display: flex;
             flex-direction: column;
@@ -26,11 +20,7 @@
     &__body {
         padding: 20px;
         max-height: 100vh;
-        padding-top: 90px;
         overflow: auto;
-        @media (max-width: 767px) {
-            display: none;
-        }
-        @apply dark:bg-gray-800 bg-gray-200;
+        @apply dark:bg-gray-800 bg-gray-200 hidden md:block;
     }
 }
