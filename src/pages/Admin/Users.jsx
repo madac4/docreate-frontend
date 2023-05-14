@@ -3,17 +3,15 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Dashboard from './Dashboard';
 import { publicRequest } from '../../helpers/instance';
-import { Loader } from '../../components/buttons/Loader';
 import UserModal from '../../components/modals/UserModal';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Table from '../../components/dashboard/Table';
-import InviteModal from '../../components/modals/InviteModal';
 
 function Users() {
     const [searchResults, setSearchResults] = React.useState([]);
     const [users, setUsers] = React.useState([]);
     const [editUser, setEditUser] = React.useState({});
-    const [userModal, setUserModal] = React.useState(false);
+    const [editModal, setEditModal] = React.useState(false);
     const { token } = useSelector((state) => state.auth);
 
     React.useEffect(() => {
@@ -30,7 +28,7 @@ function Users() {
             }
         };
         getUsers(token);
-    }, [token, userModal]);
+    }, [token, editModal]);
 
     const deleteUser = (id, name) => {
         if (token) {
@@ -52,7 +50,7 @@ function Users() {
     };
 
     const openUserModal = (user) => {
-        setUserModal(!userModal);
+        setEditModal(!editModal);
         setEditUser(user);
     };
 
@@ -64,24 +62,30 @@ function Users() {
         <Dashboard>
             <Table data={users} onSearchResults={handleSearchResults}>
                 {!searchResults.length > 0 ? (
-                    <h4 className="text-center py-6">Nu a fost găsit nici un utilizator</h4>
+                    <tbody>
+                        <tr>
+                            <td className="text-center py-6 mb-2 mt-0 md:text-2xl text-xl font-medium leading-tight dark:text-white">
+                                Nu a fost găsit nici un utilizator
+                            </td>
+                        </tr>
+                    </tbody>
                 ) : (
                     <>
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
-                                <th scope="col" class="px-4 py-3">
+                                <th scope="col" className="px-4 py-3">
                                     Nr
                                 </th>
-                                <th scope="col" class="px-4 py-3">
+                                <th scope="col" className="px-4 py-3">
                                     Numele
                                 </th>
-                                <th scope="col" class="px-4 py-3">
+                                <th scope="col" className="px-4 py-3">
                                     Email
                                 </th>
-                                <th scope="col" class="px-4 py-3">
+                                <th scope="col" className="px-4 py-3">
                                     Rolul
                                 </th>
-                                <th scope="col" class="px-4 py-3 flex items-center justify-end">
+                                <th scope="col" className="px-4 py-3 flex items-center justify-end">
                                     Acțiuni
                                 </th>
                             </tr>
@@ -89,30 +93,31 @@ function Users() {
                         <tbody>
                             {searchResults &&
                                 searchResults.map((item, index) => (
-                                    <tr class="border-b dark:border-gray-700" key={item._id}>
+                                    <tr className="border-b dark:border-gray-700" key={item._id}>
                                         <th
                                             scope="row"
-                                            class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {++index}
                                         </th>
                                         <th
                                             scope="row"
-                                            class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                             {item.name}
                                         </th>
-                                        <td class="px-4 py-3">{item.email}</td>
-                                        <td class="px-4 py-3">{item.role}</td>
-                                        <td class="px-4 py-3 flex items-center justify-end gap-3">
+                                        <td className="px-4 py-3">{item.email}</td>
+                                        <td className="px-4 py-3">{item.role}</td>
+                                        <td className="px-4 py-3 flex items-center justify-end gap-3">
                                             <button
                                                 type="button"
-                                                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                                onClick={() => openUserModal(item)}
+                                                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                                 <PencilSquareIcon className="w-4 h-4 mr-2" />
                                                 Editează
                                             </button>
                                             <button
                                                 type="button"
                                                 onClick={() => deleteUser(item._id, item.name)}
-                                                class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
+                                                className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
                                                 <TrashIcon className="w-4 h-4 mr-2" />
                                                 Șterge
                                             </button>
@@ -123,111 +128,12 @@ function Users() {
                     </>
                 )}
             </Table>
-            {/* {searchValue &&
-                users.filter((user) => user.name.toLowerCase().includes(searchValue.toLowerCase()))
-                    .length <= 0 && (
-                    <h1 className="dark:text-gray-300 text-gray-900 mb-2 text-center text-2xl font-semibold">
-                        Nu a fost găsit nici un utilizator
-                    </h1>
-                )}
-            {users ? (
-                <div className="overflow-hidden overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-500">
-                    <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-500 dark:bg-gray-800 text-sm">
-                        <thead className="bg-gray-100 dark:bg-gray-600">
-                            <tr>
-                                <th className={styles.tableRow}>
-                                    <div className="flex items-center gap-2">Nr</div>
-                                </th>
-                                <th className={styles.tableRow}>
-                                    <div className="flex items-center gap-2">Numele</div>
-                                </th>
-                                <th className={styles.tableRow}>
-                                    <div className="flex items-center gap-2">Email</div>
-                                </th>
-                                <th className={styles.tableRow}>
-                                    <div className="flex items-center gap-2">Rolul</div>
-                                </th>
-                                <th className={styles.tableRow}>Acțiuni</th>
-                                <th className="w-0 px-2">
-                                    <div className="search relative w-52">
-                                        <input
-                                            type="search"
-                                            id="searchInput"
-                                            onChange={handleSearch}
-                                            placeholder="Caută"
-                                            className="input-style w-full"
-                                        />
-                                        <span className="pointer-events-none absolute inset-y-0 right-0 grid w-10 place-content-center dark:text-white text-gray-900">
-                                            <MagnifyingGlassIcon className="w-5 h-5" />
-                                        </span>
-                                    </div>
-                                </th>
-                            </tr>
-                        </thead>
-
-                        <tbody className="divide-y divide-gray-200 dark:divide-gray-500">
-                            {searchValue
-                                ? users
-                                      .filter((user) =>
-                                          user.name
-                                              .toLowerCase()
-                                              .includes(searchValue.toLowerCase()),
-                                      )
-                                      .map((user, index) => (
-                                          <tr key={user._id}>
-                                              <td className={styles.tableId}>{++index}</td>
-                                              <td className={styles.tableText}>{user.name}</td>
-                                              <td className={styles.tableText}>{user.email}</td>
-                                              <td className={styles.tableText}>{user.role}</td>
-                                              <td className="whitespace-nowrap px-4 py-2 flex gap-2">
-                                                  <button
-                                                      onClick={() => openUserModal(user)}
-                                                      className="rounded bg-blue-300 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-blue-700 hover:text-white transition-all">
-                                                      Editează
-                                                  </button>
-                                                  <button
-                                                      onClick={() =>
-                                                          deleteUser(user._id, user.name)
-                                                      }
-                                                      className="rounded bg-red-200 px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-700 hover:text-white transition-all">
-                                                      Șterge
-                                                  </button>
-                                              </td>
-                                          </tr>
-                                      ))
-                                : users.map((user, index) => (
-                                      <tr key={user._id}>
-                                          <td className={styles.tableId}>{++index}</td>
-                                          <td className={styles.tableText}>{user.name}</td>
-                                          <td className={styles.tableText}>{user.email}</td>
-                                          <td className={styles.tableText}>{user.role}</td>
-                                          <td className="whitespace-nowrap px-4 py-2 flex gap-2">
-                                              <button
-                                                  onClick={() => openUserModal(user)}
-                                                  className="rounded bg-blue-300 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-blue-700 hover:text-white transition-all">
-                                                  Editează
-                                              </button>
-                                              <button
-                                                  onClick={() => deleteUser(user._id, user.name)}
-                                                  className="rounded bg-red-200 px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-700 hover:text-white transition-all">
-                                                  Șterge
-                                              </button>
-                                          </td>
-                                      </tr>
-                                  ))}
-                        </tbody>
-                    </table>
-
-                    <UserModal
-                        isOpen={userModal}
-                        setIsOpen={setUserModal}
-                        user={editUser}
-                        token={token}
-                    />
-                </div>
-            ) : (
-                <Loader />
-            )} */}
+            <UserModal
+                isOpen={editModal}
+                setIsOpen={setEditModal}
+                user={editUser}
+                token={token}
+                clearUser={setEditUser}></UserModal>
         </Dashboard>
     );
 }

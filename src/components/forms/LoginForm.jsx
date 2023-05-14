@@ -16,7 +16,7 @@ function LoginForm({ handleSubmit, auth, loading, forgetPassword, setAuth }) {
 
             <PasswordInput
                 value={auth.password}
-                setAuth={(e) => setAuth({ ...auth, password: e.target.value })}
+                onChange={(e) => setAuth({ ...auth, password: e.target.value })}
             />
             <button
                 type="button"

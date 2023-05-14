@@ -3,7 +3,7 @@ import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 import styles from '../styles/forms.module.scss';
 
-function PasswordInput({ value, setAuth }) {
+function PasswordInput({ value, onChange, label }) {
     const [showPassword, setShowPassword] = useState(false);
     function handleTypeChange() {
         setShowPassword(!showPassword);
@@ -11,17 +11,16 @@ function PasswordInput({ value, setAuth }) {
     return (
         <div className="relative">
             <label htmlFor="password" className={styles.label}>
-                Parola
+                {label}
             </label>
             <input
                 type={showPassword ? 'text' : 'password'}
                 value={value}
-                onChange={setAuth}
+                onChange={onChange}
                 name="password"
                 id="password"
                 placeholder="••••••••"
                 className={styles.input}
-                required
             />
             <span
                 className="absolute right-4 top-1/2 translate-y-1 inline-flex items-center cursor-pointer"

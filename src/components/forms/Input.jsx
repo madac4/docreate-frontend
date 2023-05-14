@@ -17,7 +17,6 @@ function Input({ children, value, onChange, type, placeholder, name, label, clas
                 name={name}
                 className={`${styles.input} ${classNames}`}
                 placeholder={placeholder}
-                required
             />
 
             {children}

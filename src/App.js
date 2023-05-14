@@ -60,7 +60,6 @@ const App = () => {
                                 path={Routing.DocsList.path}
                                 element={Routing.DocsList.element}
                             />
-                            <Route path={Routing.Invite.path} element={Routing.Invite.element} />
                         </Routes>
                     ) : (
                         <Routes>

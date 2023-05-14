@@ -3,8 +3,9 @@
 @tailwind utilities;
 
 .input {
-    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-3;
+    @apply shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5;
     border-radius: 8px !important;
+    font-size: 14px !important;
 }
 
 .label {
@@ -17,7 +18,7 @@
     @apply text-white;
 }
 :global(.dark) .input {
-    @apply bg-gray-600 border-gray-500 placeholder-gray-400 text-white;
+    @apply bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-primary-500 focus:border-primary-500;
 }
 :global(.dark) .searchInput {
     @apply bg-gray-600 border-gray-500 placeholder-gray-400 text-white;
