@@ -1,13 +1,15 @@
 import React from 'react';
 import { logOut } from '../../redux/api';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 function UserDropdown({ children, user, logOut, hidden }) {
     const [dropdown, setDropdown] = React.useState(false);
     const navigate = useNavigate();
+    const { sessionId, token } = useSelector((state) => state.auth);
+
     const logout = () => {
-        logOut();
+        logOut(sessionId, token);
         navigate('/');
     };
     return (
@@ -17,7 +19,11 @@ function UserDropdown({ children, user, logOut, hidden }) {
                 onClick={() => setDropdown(!dropdown)}
                 className="flex text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
                 <span className="sr-only">Open user menu</span>
-                <img className="w-9 h-9 rounded-full" src={user.profilePicture} alt={user.name} />
+                <img
+                    className="w-9 h-9 rounded-full object-cover"
+                    src={user.profilePicture}
+                    alt={user.name}
+                />
             </button>
             <div
                 className={`${

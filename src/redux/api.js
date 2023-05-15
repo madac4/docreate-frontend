@@ -24,15 +24,17 @@ export const loginUser = (body) => async (dispatch) => {
     }
 };
 
-export const loadUser = (token) => async (dispatch) => {
+export const loadUser = (token, sessionId, deviceId) => async (dispatch) => {
     if (token) {
         try {
-            const { data } = await publicRequest.get('/auth/', {
+            const { data } = await publicRequest.get(`/auth/`, {
                 headers: { 'x-auth-token': `${token}` },
+                params: { sessionId: sessionId, deviceId: deviceId },
             });
 
             if (data) {
                 dispatch(userLoaded(data));
+                console.log(data);
             } else {
                 dispatch(loginError());
             }
@@ -42,7 +44,14 @@ export const loadUser = (token) => async (dispatch) => {
     }
 };
 
-export const logOut = () => async (dispatch) => {
+export const logOut = (sessionId, token) => async (dispatch) => {
     dispatch(logout());
+    try {
+        await publicRequest.delete(`/sessions/${sessionId}`, {
+            headers: { 'x-auth-token': `${token}` },
+        });
+    } catch (error) {
+        console.log(error);
+    }
     toast.error('Ai ieșit din cont');
 };

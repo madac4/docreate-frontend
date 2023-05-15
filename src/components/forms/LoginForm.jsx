@@ -12,10 +12,13 @@ function LoginForm({ handleSubmit, auth, loading, forgetPassword, setAuth }) {
                 placeholder="name@company.com"
                 type="email"
                 label="Email"
+                required
             />
 
             <PasswordInput
                 value={auth.password}
+                label={'Parola'}
+                required
                 onChange={(e) => setAuth({ ...auth, password: e.target.value })}
             />
             <button

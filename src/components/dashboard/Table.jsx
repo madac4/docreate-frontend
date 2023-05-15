@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
-
+import { useLocation } from 'react-router-dom';
 import { MagnifyingGlassIcon, PlusSmallIcon } from '@heroicons/react/24/outline';
+
 import Input from '../forms/Input';
 import InviteModal from '../modals/InviteModal';
+import AddDocumentModal from '../modals/AddDocumentModal';
 
-function Table({ children, data, onSearchResults }) {
+function Table({ children, data, onSearchResults, actionButton }) {
     const [openInvitation, setOpenInvitation] = useState(false);
-
+    const { pathname } = useLocation();
+    const currentPath = `/${pathname.split('/').pop()}`;
     useEffect(() => {
         onSearchResults(data);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -38,7 +41,7 @@ function Table({ children, data, onSearchResults }) {
                             onClick={() => setOpenInvitation(true)}
                             className="flex items-center justify-center gap-1 text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                             <PlusSmallIcon className="w-6 h-6" />
-                            Invită utilizator
+                            {actionButton}
                         </button>
                     </div>
                 </div>
@@ -49,7 +52,11 @@ function Table({ children, data, onSearchResults }) {
                     </table>
                 </div>
 
-                <InviteModal isOpen={openInvitation} setIsOpen={setOpenInvitation} />
+                {currentPath === '/users' ? (
+                    <InviteModal isOpen={openInvitation} setIsOpen={setOpenInvitation} />
+                ) : (
+                    <AddDocumentModal isOpen={openInvitation} setIsOpen={setOpenInvitation} />
+                )}
             </div>
         </section>
     );

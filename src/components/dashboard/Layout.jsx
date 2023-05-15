@@ -12,8 +12,8 @@ import { useSelector } from 'react-redux';
 import ThemeToggle from '../../components/buttons/ThemeToggle';
 import UserDropdown from '../../components/dashboard/UserDropdown';
 
-export default function Dashboard({ children }) {
-    const { user, isAuth } = useSelector((state) => state.auth);
+export default function Layout({ children }) {
+    const { user, isAuth, isAdmin } = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const [dropdown, setDropdown] = React.useState({
         notifications: false,
@@ -117,7 +117,7 @@ export default function Dashboard({ children }) {
                                     aria-labelledby="dropdown">
                                     <li>
                                         <Link
-                                            to="#"
+                                            to="/dashboard/profile"
                                             className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">
                                             Profilul meu
                                         </Link>
@@ -129,73 +129,55 @@ export default function Dashboard({ children }) {
                 </div>
             </nav>
 
-            <aside
-                className={`${
-                    dropdown.burger ? 'translate-x-0' : '-translate-x-full'
-                } fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700`}
-                aria-label="Sidenav"
-                id="drawer-navigation">
-                <div className="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
-                    <ul className="space-y-2">
-                        <li className="list-none">
-                            <NavLink
-                                to="/dashboard"
-                                className={({ isActive }) =>
-                                    isActive
-                                        ? `flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white bg-gray-100 dark:bg-gray-700 group`
-                                        : `flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group`
-                                }
-                                end>
-                                <ChartPieIcon className="w-6 h-6 text-gray-500 mr-3 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                                Dashboard
-                            </NavLink>
-                            <NavLink
-                                to="/dashboard/users"
-                                className={({ isActive }) =>
-                                    isActive
-                                        ? `flex items-center p-2 text-base font-medium text-gray-900 mt-4 rounded-lg dark:text-white bg-gray-100 dark:bg-gray-700 group`
-                                        : `flex items-center p-2 text-base font-medium text-gray-900 mt-4 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group`
-                                }>
-                                <UsersIcon className="w-6 h-6 text-gray-500 mr-3 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                                Utilizatori
-                            </NavLink>
-                            <NavLink
-                                to="/dashboard/documents"
-                                className={({ isActive }) =>
-                                    isActive
-                                        ? `flex items-center p-2 text-base font-medium text-gray-900 mt-4 rounded-lg dark:text-white bg-gray-100 dark:bg-gray-700 group`
-                                        : `flex items-center p-2 text-base font-medium text-gray-900 mt-4 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group`
-                                }>
-                                <ClipboardDocumentListIcon className="w-6 h-6 text-gray-500 mr-3 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
-                                Lista de documente
-                            </NavLink>
-                        </li>
-                    </ul>
-                </div>
-            </aside>
+            {isAdmin && (
+                <aside
+                    className={`${
+                        dropdown.burger ? 'translate-x-0' : '-translate-x-full'
+                    } fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700`}
+                    aria-label="Sidenav"
+                    id="drawer-navigation">
+                    <div className="overflow-y-auto py-5 px-3 h-full bg-white dark:bg-gray-800">
+                        <ul className="space-y-2">
+                            <li className="list-none">
+                                <NavLink
+                                    to="/dashboard"
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? `flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white bg-gray-100 dark:bg-gray-700 group`
+                                            : `flex items-center p-2 text-base font-medium text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group`
+                                    }
+                                    end>
+                                    <ChartPieIcon className="w-6 h-6 text-gray-500 mr-3 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                                    Dashboard
+                                </NavLink>
+                                <NavLink
+                                    to="/dashboard/users"
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? `flex items-center p-2 text-base font-medium text-gray-900 mt-4 rounded-lg dark:text-white bg-gray-100 dark:bg-gray-700 group`
+                                            : `flex items-center p-2 text-base font-medium text-gray-900 mt-4 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group`
+                                    }>
+                                    <UsersIcon className="w-6 h-6 text-gray-500 mr-3 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                                    Utilizatori
+                                </NavLink>
+                                <NavLink
+                                    to="/dashboard/documents"
+                                    className={({ isActive }) =>
+                                        isActive
+                                            ? `flex items-center p-2 text-base font-medium text-gray-900 mt-4 rounded-lg dark:text-white bg-gray-100 dark:bg-gray-700 group`
+                                            : `flex items-center p-2 text-base font-medium text-gray-900 mt-4 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group`
+                                    }>
+                                    <ClipboardDocumentListIcon className="w-6 h-6 text-gray-500 mr-3 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+                                    Documentele
+                                </NavLink>
+                            </li>
+                        </ul>
+                    </div>
+                </aside>
+            )}
 
-            <main className="p-4 md:ml-64 h-auto pt-20">
+            <main className={isAdmin ? 'p-4 md:ml-64 h-auto pt-20' : 'p-4 h-auto pt-20'}>
                 {children}
-                {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
-                    <div className="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-32 md:h-64"></div>
-                    <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64"></div>
-                    <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64"></div>
-                    <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64"></div>
-                </div>
-                <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4"></div>
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-                    <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-                    <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-                    <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-                </div>
-                <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4"></div>
-                <div className="grid grid-cols-2 gap-4">
-                    <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-                    <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-                    <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-                    <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
-                </div> */}
             </main>
         </div>
     );

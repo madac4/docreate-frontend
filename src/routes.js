@@ -1,22 +1,22 @@
 import Documents from './pages/Documents';
-import NotFound from './pages/NotFound';
 import Home from './pages/Home';
-import Dashboard from './pages/Admin/Dashboard';
+import Error404 from './pages/Error/404';
+import Dashboard from './pages/Dashboard/Dashboard';
 import Register from './pages/Admin/Register';
 import SingleDocument from './pages/SingleDocument/';
-import Users from './pages/Admin/Users';
-import AddDocument from './pages/Admin/AddDocument';
-import DocsList from './pages/Admin/DocsList';
+import UserList from './pages/Dashboard/UserList';
+import DocumentList from './pages/Dashboard/DocumentList';
+import Profile from './pages/Dashboard/Profile';
 
 export const Routing = {
-    NotFound: { path: '*', element: <NotFound /> },
+    NotFound: { path: '*', element: <Error404 /> },
     Homepage: { path: '/', element: <Home /> },
     Documents: { path: '/documents', element: <Documents /> },
     Dashboard: { path: '/dashboard', element: <Dashboard /> },
-    AddDocument: { path: '/dashboard/new-document', element: <AddDocument /> },
-    DocsList: { path: '/dashboard/documents', element: <DocsList /> },
+    Profile: { path: '/dashboard/profile', element: <Profile /> },
+    DocsList: { path: '/dashboard/documents', element: <DocumentList /> },
     Register: { path: '/register/:token', element: <Register /> },
     Document: { path: '/document/:slug', element: <SingleDocument /> },
-    UsersList: { path: '/dashboard/users', element: <Users /> },
+    UsersList: { path: '/dashboard/users', element: <UserList /> },
     ResetPassword: { path: '/reset-password/:token', element: <Home /> },
 };

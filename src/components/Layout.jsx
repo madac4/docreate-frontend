@@ -8,8 +8,8 @@ import styles from './styles/buttons.module.scss';
 import ThemeToggle from './buttons/ThemeToggle';
 import UserDropdown from './dashboard/UserDropdown';
 
-export default function Layout({ children, logOut }) {
-    const { user, isAuth } = useSelector((state) => state.auth);
+export default function Layout({ children }) {
+    const { user, isAuth, isAdmin } = useSelector((state) => state.auth);
     const [modal, setModal] = React.useState(false);
     const location = useLocation();
 
@@ -40,7 +40,7 @@ export default function Layout({ children, logOut }) {
                             )}
 
                             <ThemeToggle />
-                            {isAuth && user && (
+                            {isAuth && user && isAdmin && (
                                 <UserDropdown user={user}>
                                     <ul
                                         className="py-1 text-gray-700 dark:text-gray-300"
@@ -50,6 +50,29 @@ export default function Layout({ children, logOut }) {
                                                 to="/dashboard"
                                                 className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">
                                                 Dashboard
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link
+                                                to="/dashboard/profile"
+                                                className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">
+                                                Vezi profilul
+                                            </Link>
+                                        </li>
+                                    </ul>
+                                </UserDropdown>
+                            )}
+
+                            {isAuth && user && !isAdmin && (
+                                <UserDropdown user={user}>
+                                    <ul
+                                        className="py-1 text-gray-700 dark:text-gray-300"
+                                        aria-labelledby="dropdown">
+                                        <li>
+                                            <Link
+                                                to="/dashboard/profile"
+                                                className="block py-2 px-4 text-sm hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">
+                                                Vezi profilul
                                             </Link>
                                         </li>
                                     </ul>

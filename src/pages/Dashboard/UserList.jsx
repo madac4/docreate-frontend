@@ -1,20 +1,23 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import Dashboard from './Dashboard';
 import { publicRequest } from '../../helpers/instance';
-import UserModal from '../../components/modals/UserModal';
+import EditUserModal from '../../components/modals/EditUserModal';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Table from '../../components/dashboard/Table';
+import Confirmation from '../../components/modals/Confirmation';
+import Layout from '../../components/dashboard/Layout';
 
-function Users() {
-    const [searchResults, setSearchResults] = React.useState([]);
-    const [users, setUsers] = React.useState([]);
-    const [editUser, setEditUser] = React.useState({});
-    const [editModal, setEditModal] = React.useState(false);
+function UserList() {
+    const [confirmationMessage, setConfirmationMessage] = useState({ message: '', id: null });
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [searchResults, setSearchResults] = useState([]);
     const { token } = useSelector((state) => state.auth);
+    const [editModal, setEditModal] = useState(false);
+    const [editUser, setEditUser] = useState({});
+    const [users, setUsers] = useState([]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const getUsers = async (token) => {
             if (token) {
                 try {
@@ -30,26 +33,21 @@ function Users() {
         getUsers(token);
     }, [token, editModal]);
 
-    const deleteUser = (id, name) => {
-        if (token) {
-            if (window.confirm(`Utilizatorul ${name} va fi șters definitiv`)) {
-                try {
-                    publicRequest.delete(`/users/delete/${id}`, {
-                        headers: { 'x-auth-token': `${token}` },
-                    });
-                    toast.success('Utilizatorul a fost șters cu succes');
-                    setTimeout(() => {
-                        const deletedUsers = users.filter((user) => user._id !== id);
-                        setSearchResults(deletedUsers);
-                    }, 300);
-                } catch (error) {
-                    console.log(error);
-                }
-            }
+    const handleConfirmDeletion = (id) => {
+        setShowConfirmation(false);
+        try {
+            publicRequest.delete(`/users/delete/${id}`, {
+                headers: { 'x-auth-token': `${token}` },
+            });
+            toast.success('Utilizatorul a fost șters cu succes');
+            setTimeout(() => {
+                setSearchResults(users.filter((user) => user._id !== id));
+            }, 300);
+        } catch (error) {
+            toast.error('Utilizatorul nu a putut fi șters');
         }
     };
-
-    const openUserModal = (user) => {
+    const openEditModal = (user) => {
         setEditModal(!editModal);
         setEditUser(user);
     };
@@ -58,9 +56,22 @@ function Users() {
         setSearchResults(results);
     };
 
+    const handleCancelDeletion = () => {
+        setShowConfirmation(false);
+    };
+
+    const handleDeleteUser = (name, id) => {
+        const confirmationMessage = `Utilizatorul ${name} va fi șters definitiv`;
+        setConfirmationMessage({ message: confirmationMessage, id: id });
+        setShowConfirmation(true);
+    };
+
     return (
-        <Dashboard>
-            <Table data={users} onSearchResults={handleSearchResults}>
+        <Layout>
+            <Table
+                data={users}
+                onSearchResults={handleSearchResults}
+                actionButton={'Invită utilizator'}>
                 {!searchResults.length > 0 ? (
                     <tbody>
                         <tr>
@@ -109,14 +120,16 @@ function Users() {
                                         <td className="px-4 py-3 flex items-center justify-end gap-3">
                                             <button
                                                 type="button"
-                                                onClick={() => openUserModal(item)}
+                                                onClick={() => openEditModal(item)}
                                                 className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                                 <PencilSquareIcon className="w-4 h-4 mr-2" />
                                                 Editează
                                             </button>
                                             <button
                                                 type="button"
-                                                onClick={() => deleteUser(item._id, item.name)}
+                                                onClick={() =>
+                                                    handleDeleteUser(item.name, item._id)
+                                                }
                                                 className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900">
                                                 <TrashIcon className="w-4 h-4 mr-2" />
                                                 Șterge
@@ -128,14 +141,21 @@ function Users() {
                     </>
                 )}
             </Table>
-            <UserModal
+            {showConfirmation && (
+                <Confirmation
+                    message={confirmationMessage}
+                    onConfirm={handleConfirmDeletion}
+                    onCancel={handleCancelDeletion}
+                />
+            )}
+            <EditUserModal
                 isOpen={editModal}
                 setIsOpen={setEditModal}
                 user={editUser}
                 token={token}
-                clearUser={setEditUser}></UserModal>
-        </Dashboard>
+                clearUser={setEditUser}></EditUserModal>
+        </Layout>
     );
 }
 
-export default Users;
+export default UserList;

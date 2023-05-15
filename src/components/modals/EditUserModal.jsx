@@ -2,7 +2,7 @@ import React from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import EditUser from '../forms/EditUser';
 
-function UserModal({ user, isOpen, setIsOpen, token, clearUser }) {
+function EditUserModal({ user, isOpen, setIsOpen, token, clearUser }) {
     const closeModal = () => {
         setIsOpen(false);
         clearUser({});
@@ -12,9 +12,9 @@ function UserModal({ user, isOpen, setIsOpen, token, clearUser }) {
         <div
             className={` ${
                 isOpen ? 'opacity-1 visible' : 'opacity-0 invisible'
-            } fixed left-0 right-0 z-50 bg-black transition-all bg-opacity-40 items-center justify-center overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full flex`}>
-            <div className="relative w-full h-full max-w-2xl px-4 md:h-auto">
-                <div className="relative bg-white rounded-lg shadow dark:bg-gray-800">
+            } fixed left-0 right-0 z-50 bg-black transition-all top-0 bg-opacity-40 items-center justify-center overflow-x-hidden overflow-y-auto top-4 md:inset-0 h-modal sm:h-full flex`}>
+            <div className="relative w-full h-full max-w-2xl px-4 md:h-auto flex items-center">
+                <div className="relative bg-white rounded-lg shadow dark:bg-gray-800 w-full">
                     <div className="flex items-start justify-between p-5 border-b rounded-t dark:border-gray-700">
                         <h3 className="text-xl font-semibold dark:text-white">
                             Editează utilizator {user.name}
@@ -36,4 +36,4 @@ function UserModal({ user, isOpen, setIsOpen, token, clearUser }) {
     );
 }
 
-export default UserModal;
+export default EditUserModal;

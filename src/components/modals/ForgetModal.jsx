@@ -1,29 +1,8 @@
 import React from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import ButtonLoader from '../buttons/ButtonLoader';
-import { publicRequest } from '../../helpers/instance';
-import { toast } from 'react-toastify';
+import ForgetPassword from '../forms/ForgetPassword';
 
 function ForgetModal({ openModal, setModal }) {
-    const [loading, setLoading] = React.useState(false);
-    const [email, setEmail] = React.useState('');
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        setLoading(true);
-        try {
-            const response = await publicRequest.post('/auth/forget-password', { email });
-            toast.success(response.data.message);
-            setEmail('');
-            setLoading(false);
-            setModal(false);
-        } catch (error) {
-            console.log(error);
-            toast.error('Utilizatorul nu a fost găsit');
-            setLoading(false);
-        }
-    };
-
     const closeModal = () => {
         setModal(false);
     };
@@ -44,30 +23,9 @@ function ForgetModal({ openModal, setModal }) {
                     </button>
                     <div className="px-6 py-6 lg:px-8">
                         <h3 className="mb-4 text-xl font-medium text-gray-900 dark:text-white">
-                            Forget Password
+                            Ai uitat parola?
                         </h3>
-                        <form className="space-y-6" onSubmit={handleSubmit}>
-                            <div>
-                                <label
-                                    htmlFor="forget-email"
-                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                    Email
-                                </label>
-                                <input
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    type="email"
-                                    name="email"
-                                    id="forget-email"
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                                    placeholder="name@company.com"
-                                    required
-                                />
-                            </div>
-                            <ButtonLoader isLoading={loading} classNames="w-full">
-                                Resetează parola
-                            </ButtonLoader>
-                        </form>
+                        <ForgetPassword closeModal={closeModal} />
                     </div>
                 </div>
             </div>

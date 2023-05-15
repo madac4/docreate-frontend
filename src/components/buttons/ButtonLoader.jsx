@@ -2,7 +2,7 @@ import React from 'react';
 import { Loading } from './Loader';
 import styles from '../styles/buttons.module.scss';
 
-function ButtonLoader({ children, isLoading, classNames }) {
+function ButtonLoader({ children, isLoading, classNames, type }) {
     return (
         <button
             className={
