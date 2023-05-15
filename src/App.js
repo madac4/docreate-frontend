@@ -11,8 +11,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Routing } from './routes';
 const App = () => {
     const { token, isAuth, isAdmin, sessionId, deviceId } = useSelector((state) => state.auth);
-    console.log(sessionId);
-    console.log(deviceId);
     React.useEffect(() => {
         store.dispatch(loadUser(token, sessionId, deviceId));
     }, [token, sessionId, deviceId]);
