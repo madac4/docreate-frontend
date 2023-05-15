@@ -1,9 +1,5 @@
 import { useState, useEffect } from 'react';
-import {
-    ArrowUpOnSquareIcon,
-    ComputerDesktopIcon,
-    DevicePhoneMobileIcon,
-} from '@heroicons/react/24/outline';
+import { ArrowUpOnSquareIcon } from '@heroicons/react/24/outline';
 import { useSelector } from 'react-redux';
 
 import Layout from '../../components/dashboard/Layout';
@@ -23,7 +19,6 @@ function Profile() {
         confirmPassword: '',
     });
     const [organization, setOrganization] = useState('');
-    const [sessions, setSessions] = useState([]);
     let { user, token } = useSelector((state) => state.auth);
     const [profilePicture, setProfilePicture] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -36,12 +31,6 @@ function Profile() {
                     headers: { 'x-auth-token': `${token}` },
                 });
                 setOrganization(response.data);
-            }
-            if (user && token) {
-                const response = await publicRequest.get(`/sessions`, {
-                    headers: { 'x-auth-token': `${token}` },
-                });
-                setSessions(response.data);
             }
         }
 
@@ -133,33 +122,33 @@ function Profile() {
         }
     };
 
-    const deleteSession = async (sessionId, deviceId) => {
-        try {
-            await publicRequest.delete(`/sessions/${sessionId}`, {
-                headers: { 'x-auth-token': `${token}` },
-                params: { deviceId: deviceId },
-            });
-            toast.success(`Sesiunea ${sessionId} a fost terminata`);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    // const deleteSession = async (sessionId, deviceId) => {
+    //     try {
+    //         await publicRequest.delete(`/sessions/${sessionId}`, {
+    //             headers: { 'x-auth-token': `${token}` },
+    //             params: { deviceId: deviceId },
+    //         });
+    //         toast.success(`Sesiunea ${sessionId} a fost terminata`);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
-    const sessionIcon = (session) => {
-        if (session === 'Android') {
-            return <DevicePhoneMobileIcon className="w-6 h-6 dark:text-white" />;
-        } else if (session === 'iOS') {
-            return <DevicePhoneMobileIcon className="w-6 h-6 dark:text-white" />;
-        } else if (session === 'Windows') {
-            return <ComputerDesktopIcon className="w-6 h-6 dark:text-white" />;
-        } else if (session === 'Linux') {
-            return <ComputerDesktopIcon className="w-6 h-6 dark:text-white" />;
-        } else if (session === 'Mac OS') {
-            return <ComputerDesktopIcon className="w-6 h-6 dark:text-white" />;
-        } else {
-            return <ComputerDesktopIcon className="w-6 h-6 dark:text-white" />;
-        }
-    };
+    // const sessionIcon = (session) => {
+    //     if (session === 'Android') {
+    //         return <DevicePhoneMobileIcon className="w-6 h-6 dark:text-white" />;
+    //     } else if (session === 'iOS') {
+    //         return <DevicePhoneMobileIcon className="w-6 h-6 dark:text-white" />;
+    //     } else if (session === 'Windows') {
+    //         return <ComputerDesktopIcon className="w-6 h-6 dark:text-white" />;
+    //     } else if (session === 'Linux') {
+    //         return <ComputerDesktopIcon className="w-6 h-6 dark:text-white" />;
+    //     } else if (session === 'Mac OS') {
+    //         return <ComputerDesktopIcon className="w-6 h-6 dark:text-white" />;
+    //     } else {
+    //         return <ComputerDesktopIcon className="w-6 h-6 dark:text-white" />;
+    //     }
+    // };
     return (
         <Layout>
             <div className="relative w-full h-full overflow-y-auto bg-gray-50 dark:bg-gray-900">
@@ -220,7 +209,7 @@ function Profile() {
                             </div>
                         </div>
 
-                        <div className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                        {/*<div className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
                             <div className="flow-root">
                                 <h3 className="text-xl font-semibold dark:text-white">Sesiuni</h3>
                                 <ul className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -257,7 +246,7 @@ function Profile() {
                                 </ul>
                             </div>
                         </div>
-                        {/* <div className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800 xl:mb-0">
+                         <div className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 sm:p-6 dark:bg-gray-800 xl:mb-0">
                             <div className="flow-root">
                                 <h3 className="text-xl font-semibold dark:text-white">
                                     Notificări

@@ -10,6 +10,8 @@ import Layout from '../../components/Layout';
 import { Loader } from '../../components/buttons/Loader';
 import ButtonLoader from '../../components/buttons/ButtonLoader';
 import buttons from '../../components/styles/buttons.module.scss';
+import Input from '../../components/forms/Input';
+import DateInput from '../../components/forms/DateInput';
 
 function SingleDocument() {
     const [viewportWidth, setViewportWidth] = React.useState(window.innerWidth);
@@ -126,47 +128,68 @@ function SingleDocument() {
                                     element.inputs &&
                                     element.inputs.map((input, index) =>
                                         input.type !== 'date' ? (
-                                            <input
+                                            <Input
                                                 key={`${input.name}_${index}`}
                                                 type={input.type}
+                                                label={input.placeholder}
                                                 name={input.name}
-                                                required
+                                                placeholder={input.placeholder}
                                                 onChange={(e) =>
                                                     setInputValues({
                                                         ...inputValues,
                                                         [e.target.name]: e.target.value,
                                                     })
                                                 }
-                                                placeholder={input.placeholder}
-                                                className="auth-input pr-3"
+                                                required
                                             />
                                         ) : (
-                                            <label
-                                                className="form-label mb-4"
-                                                key={`${input.name}_${index}`}>
-                                                {input.placeholder}
-                                                <input
-                                                    type={input.type}
-                                                    name={input.name}
-                                                    required
-                                                    onChange={(e) => {
-                                                        const date = new Date(e.target.value);
-                                                        const formattedDate = date
-                                                            .toLocaleDateString('en-GB', {
-                                                                day: '2-digit',
-                                                                month: '2-digit',
-                                                                year: 'numeric',
-                                                            })
-                                                            .replace(/\//g, '.');
-                                                        setInputValues({
-                                                            ...inputValues,
-                                                            [e.target.name]: formattedDate,
-                                                        });
-                                                    }}
-                                                    placeholder={input.placeholder}
-                                                    className="auth-input pr-3"
-                                                />
-                                            </label>
+                                            <DateInput
+                                                key={`${input.name}_${index}`}
+                                                type={input.type}
+                                                label={input.placeholder}
+                                                name={input.name}
+                                                required
+                                                onChange={(e) => {
+                                                    const date = new Date(e.target.value);
+                                                    const formattedDate = date
+                                                        .toLocaleDateString('en-GB', {
+                                                            day: '2-digit',
+                                                            month: '2-digit',
+                                                            year: 'numeric',
+                                                        })
+                                                        .replace(/\//g, '.');
+                                                    setInputValues({
+                                                        ...inputValues,
+                                                        [e.target.name]: formattedDate,
+                                                    });
+                                                }}
+                                            />
+                                            // <label
+                                            //     className="form-label mb-4"
+                                            //     key={`${input.name}_${index}`}>
+                                            //     {input.placeholder}
+                                            //     <input
+                                            //         type={input.type}
+                                            //         name={input.name}
+                                            //         required
+                                            //         onChange={(e) => {
+                                            //             const date = new Date(e.target.value);
+                                            //             const formattedDate = date
+                                            //                 .toLocaleDateString('en-GB', {
+                                            //                     day: '2-digit',
+                                            //                     month: '2-digit',
+                                            //                     year: 'numeric',
+                                            //                 })
+                                            //                 .replace(/\//g, '.');
+                                            //             setInputValues({
+                                            //                 ...inputValues,
+                                            //                 [e.target.name]: formattedDate,
+                                            //             });
+                                            //         }}
+                                            //         placeholder={input.placeholder}
+                                            //         className="auth-input pr-3"
+                                            //     />
+                                            // </label>
                                         ),
                                     )}
                             </div>

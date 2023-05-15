@@ -112,7 +112,12 @@ function UserList() {
                                         </th>
                                         <th
                                             scope="row"
-                                            className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                            className="px-4 py-3 inline-flex gap-3 items-center h-full font-medium text-md text-gray-900 whitespace-nowrap dark:text-white">
+                                            <img
+                                                src={item.profilePicture}
+                                                className="w-10 h-10 rounded-full object-cover"
+                                                alt=""
+                                            />
                                             {item.name}
                                         </th>
                                         <td className="px-4 py-3">{item.email}</td>

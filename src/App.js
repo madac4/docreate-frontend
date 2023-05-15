@@ -10,10 +10,10 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import { Routing } from './routes';
 const App = () => {
-    const { token, isAuth, isAdmin, sessionId, deviceId } = useSelector((state) => state.auth);
+    const { token, isAuth, isAdmin } = useSelector((state) => state.auth);
     React.useEffect(() => {
-        store.dispatch(loadUser(token, sessionId, deviceId));
-    }, [token, sessionId, deviceId]);
+        store.dispatch(loadUser(token));
+    }, [token]);
 
     React.useEffect(() => {
         const isDark = localStorage.getItem('isDarkMode') === 'true';

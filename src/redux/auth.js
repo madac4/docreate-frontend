@@ -5,8 +5,6 @@ const authSlice = createSlice({
     initialState: {
         token: null,
         isAdmin: null,
-        sessionId: null,
-        deviceId: null,
         user: null,
         isAuth: false,
         loading: false,
@@ -24,8 +22,6 @@ const authSlice = createSlice({
                 ...state,
                 ...action.payload,
                 token: action.payload.token,
-                sessionId: action.payload.sessionId,
-                deviceId: action.payload.deviceId,
                 isAuth: true,
                 loading: false,
             };
@@ -33,8 +29,6 @@ const authSlice = createSlice({
         loginError: (state) => {
             return {
                 token: null,
-                sessionId: null,
-                deviceId: null,
                 user: null,
                 isAuth: false,
                 loading: false,
@@ -54,8 +48,6 @@ const authSlice = createSlice({
             return {
                 token: null,
                 user: null,
-                sessionId: null,
-                deviceId: null,
                 isAuth: false,
                 loading: false,
                 isAdmin: false,

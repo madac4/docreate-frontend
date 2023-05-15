@@ -24,16 +24,14 @@ export const loginUser = (body) => async (dispatch) => {
     }
 };
 
-export const loadUser = (token, sessionId, deviceId) => async (dispatch) => {
-    if (token && sessionId && deviceId) {
+export const loadUser = (token) => async (dispatch) => {
+    if (token) {
         try {
             const { data } = await publicRequest.get(`/auth/`, {
                 headers: { 'x-auth-token': `${token}` },
-                params: { sessionId: sessionId, deviceId: deviceId },
             });
 
             if (data) {
-                console.log(data);
                 dispatch(userLoaded(data));
                 console.log(data);
             } else {
