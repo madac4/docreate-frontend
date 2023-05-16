@@ -32,6 +32,12 @@ const App = () => {
                             path={Routing.ResetPassword.path}
                             element={Routing.ResetPassword.element}
                         />
+                        {token && (
+                            <Route
+                                path={Routing.Register.path}
+                                element={Routing.Register.element}
+                            />
+                        )}
                         {isAuth && isAdmin && (
                             <>
                                 <Route
