@@ -52,7 +52,7 @@ function Documents() {
                 </Input>
 
                 {documents && documents.length > 0 ? (
-                    <div className="documents-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-8 md:mt-12">
+                    <div className="documents-list pb-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-8 md:mt-12">
                         {documents
                             ?.filter((item) =>
                                 item.name.toUpperCase().includes(searchValue.toUpperCase()),
