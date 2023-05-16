@@ -1,7 +1,6 @@
 import React from 'react';
 import { toast } from 'react-toastify';
 import { useParams, useNavigate } from 'react-router-dom';
-import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { publicRequest } from '../../helpers/instance';
 import ButtonLoader from '../../components/buttons/ButtonLoader';
 import Layout from '../../components/Layout';
@@ -10,7 +9,6 @@ import PasswordInput from '../../components/forms/PasswordInput';
 
 function Register() {
     const [loading, setLoading] = React.useState(false);
-    const [showPassword, setShowPassword] = React.useState(false);
     const { token } = useParams();
     const navigate = useNavigate();
     const [register, setRegister] = React.useState({
@@ -18,10 +16,6 @@ function Register() {
         email: '',
         password: '',
     });
-
-    function handleCheckboxChange() {
-        setShowPassword(!showPassword);
-    }
 
     React.useEffect(() => {
         const getRegisterEmail = async (token) => {
@@ -52,6 +46,8 @@ function Register() {
             setRegister({ name: '', email: '', password: '' });
         }
     };
+
+    console.log(token);
 
     return (
         <Layout>
