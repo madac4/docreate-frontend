@@ -12,10 +12,12 @@ import ButtonLoader from '../../components/buttons/ButtonLoader';
 import buttons from '../../components/styles/buttons.module.scss';
 import Input from '../../components/forms/Input';
 import DateInput from '../../components/forms/DateInput';
+import { toast } from 'react-toastify';
 
 function SingleDocument() {
     const [viewportWidth, setViewportWidth] = React.useState(window.innerWidth);
-    const [inputValues, setInputValues] = React.useState({});
+    const [inputValues, setInputValues] = React.useState({ repeater: [] });
+    const [repeater, setRepeater] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const [html, setHtml] = React.useState('');
     const [url, setUrl] = React.useState('');
@@ -112,7 +114,17 @@ function SingleDocument() {
             setLoading(false);
         }
     };
+    const pushRepeater = () => {
+        setInputValues({
+            ...inputValues,
+            repeater: [...inputValues.repeater, repeater],
+        });
 
+        setRepeater([]);
+        toast.success('Element adaugat cu succes');
+    };
+
+    console.log(inputValues);
     return (
         <Layout>
             {element ? (
@@ -127,7 +139,7 @@ function SingleDocument() {
                                 {element &&
                                     element.inputs &&
                                     element.inputs.map((input, index) =>
-                                        input.type !== 'date' ? (
+                                        input.type !== 'date' && !input.repeat ? (
                                             <Input
                                                 key={`${input.name}_${index}`}
                                                 type={input.type}
@@ -141,6 +153,20 @@ function SingleDocument() {
                                                     })
                                                 }
                                                 required
+                                            />
+                                        ) : input.type !== 'date' && input.repeat ? (
+                                            <Input
+                                                key={`${input.name}_${index}`}
+                                                type={input.type}
+                                                label={`${input.placeholder} *`}
+                                                name={input.name}
+                                                placeholder={input.placeholder}
+                                                onChange={(e) =>
+                                                    setRepeater({
+                                                        ...repeater,
+                                                        [e.target.name]: e.target.value,
+                                                    })
+                                                }
                                             />
                                         ) : (
                                             <DateInput
@@ -164,36 +190,17 @@ function SingleDocument() {
                                                     });
                                                 }}
                                             />
-                                            // <label
-                                            //     className="form-label mb-4"
-                                            //     key={`${input.name}_${index}`}>
-                                            //     {input.placeholder}
-                                            //     <input
-                                            //         type={input.type}
-                                            //         name={input.name}
-                                            //         required
-                                            //         onChange={(e) => {
-                                            //             const date = new Date(e.target.value);
-                                            //             const formattedDate = date
-                                            //                 .toLocaleDateString('en-GB', {
-                                            //                     day: '2-digit',
-                                            //                     month: '2-digit',
-                                            //                     year: 'numeric',
-                                            //                 })
-                                            //                 .replace(/\//g, '.');
-                                            //             setInputValues({
-                                            //                 ...inputValues,
-                                            //                 [e.target.name]: formattedDate,
-                                            //             });
-                                            //         }}
-                                            //         placeholder={input.placeholder}
-                                            //         className="auth-input pr-3"
-                                            //     />
-                                            // </label>
                                         ),
                                     )}
                             </div>
-                            <ButtonLoader isLoading={loading} classNames={'w-full py-3'}>
+                            <button
+                                type="button"
+                                onClick={pushRepeater}
+                                className={buttons.buttonPrimary}>
+                                Adauga rand
+                            </button>
+
+                            <ButtonLoader isLoading={loading} classNames={'w-full py-3 mt-5'}>
                                 Generează Document
                             </ButtonLoader>
                             {url.length > 0 && viewportWidth < 767 && html}

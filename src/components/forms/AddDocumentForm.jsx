@@ -1,4 +1,4 @@
-import { ArrowUpTrayIcon } from '@heroicons/react/24/outline';
+import { ArrowUpTrayIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Dropzone from 'react-dropzone';
@@ -9,11 +9,14 @@ import ButtonLoader from '../buttons/ButtonLoader';
 import styles from '../styles/buttons.module.scss';
 import Select from './Select';
 import Input from './Input';
+import ButtonIcon from '../buttons/ButtonIcon';
 function AddDocumentForm() {
-    const [input, setInput] = useState({ placeholder: '', type: '', name: '' });
+    const [input, setInput] = useState({ placeholder: '', type: '', name: '', repeat: false });
     const [file, setFile] = useState({ file: '', name: '', inputs: [] });
     const { token } = useSelector((state) => state.auth);
     const [loading, setLoading] = useState(false);
+
+    console.log(input);
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -47,6 +50,8 @@ function AddDocumentForm() {
             toast.error('Complectați totate câmpurile');
         }
     };
+
+    console.log(input);
     return (
         <form onSubmit={handleSubmit}>
             <Input
@@ -54,9 +59,9 @@ function AddDocumentForm() {
                 required
                 type="text"
                 name="document-name"
-                value={file.name}
                 onChange={(e) => setFile({ ...file, name: e.target.value })}
             />
+
             <Dropzone onDrop={(acceptedFiles) => setFile({ ...file, file: acceptedFiles[0] })}>
                 {({ getRootProps, getInputProps }) => (
                     <div
@@ -87,32 +92,43 @@ function AddDocumentForm() {
                     </div>
                 )}
             </Dropzone>
-            <div className="grid grid-cols-3 gap-x-5 w-full gap-y-3">
+
+            <div className="grid grid-cols-4 gap-x-2 w-full gap-y-3 mt-2">
                 <Input
-                    label={'Placeholder'}
+                    placeholder={'Placeholder'}
                     type="text"
                     name="placeholder"
                     value={input.placeholder}
                     onChange={(e) => setInput({ ...input, placeholder: e.target.value })}
                 />
                 <Select
-                    label={'Tipul'}
+                    placeholder={'Tipul'}
                     name="type"
                     value={input.type}
                     onChange={(e) => setInput({ ...input, type: e.target.value })}
                 />
                 <Input
-                    label={'Numele'}
+                    placeholder={'Numele'}
                     type="text"
                     name="name"
                     value={input.name}
                     onChange={(e) => setInput({ ...input, name: e.target.value })}
                 />
+                <ButtonIcon
+                    checked={input.repeat}
+                    classNames={'mr-0'}
+                    clickEvent={() => setInput({ ...input, repeat: !input.repeat })}>
+                    {input.repeat ? (
+                        <CheckIcon className={`${input.repeat && 'text-white'} w-5 h-5`} />
+                    ) : (
+                        <XMarkIcon className={`${input.repeat && 'text-white'} w-5 h-5`} />
+                    )}
+                </ButtonIcon>
                 {file.inputs.length > 0 &&
                     file.inputs.map((input, index) => (
                         <div
                             key={`${input.name}_${index}`}
-                            className="col-span-3 grid grid-cols-3 gap-4">
+                            className="col-span-4 grid grid-cols-4 gap-x-2 gap-y-3">
                             <p className="text-white font-semibold border p-1 text-sm rounded-md">
                                 {input.placeholder}
                             </p>
@@ -122,9 +138,15 @@ function AddDocumentForm() {
                             <p className="text-white font-semibold border p-1 text-sm rounded-md">
                                 {input.name}
                             </p>
+                            <p className="text-white font-semibold border p-1 text-sm rounded-md">
+                                {input.repeat ? 'Da' : 'Nu'}
+                            </p>
                         </div>
                     ))}
-                <button type="button" onClick={handleAddInputs} className={styles.buttonEmpty}>
+                <button
+                    type="button"
+                    onClick={handleAddInputs}
+                    className={`${styles.buttonEmpty} col-span-2`}>
                     Adaugă Câmp
                 </button>
             </div>
