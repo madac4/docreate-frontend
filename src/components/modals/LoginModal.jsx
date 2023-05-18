@@ -1,53 +1,24 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
-import { loginUser } from '../../redux/api';
-import ButtonLoader from '../buttons/ButtonLoader';
 import ForgetModal from './ForgetModal';
-import PasswordInput from '../forms/PasswordInput';
-import Input from '../forms/Input';
 import LoginForm from '../forms/LoginForm';
 
 function LoginModal({ openModal, setModal }) {
-    const [loading, setLoading] = React.useState(false);
     const [forgetModal, setForgetModal] = React.useState(false);
-    const [auth, setAuth] = React.useState({
-        email: '',
-        password: '',
-    });
-    const authData = useSelector((state) => state.auth);
-    const dispatch = useDispatch();
-
-    React.useEffect(() => {
-        if (authData.isAuth) {
-            setModal(false);
-        }
-    }, [authData.isAuth, setModal]);
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        setLoading(true);
-        dispatch(loginUser(auth));
-        if (authData.isAuth) {
-            setModal(false);
-        }
-        setLoading(false);
-    };
-
-    const forgetPassword = () => {
-        setForgetModal(true);
-        setModal(false);
-    };
-
     const closeModal = () => {
         setModal(false);
-        setAuth({ email: '', password: '' });
     };
 
     return (
         <>
-            <div tabIndex="-1" className={openModal ? 'modal open' : 'modal'}>
+            <div
+                tabIndex="-1"
+                className={`${
+                    openModal
+                        ? 'opacity-1 visible scale-100 backdrop-blur-sm'
+                        : 'opacity-0 invisible scale-90 backdrop-blur-none'
+                } transition-all fixed z-50 items-center  justify-center overflow-x-hidden overflow-y-auto inset-0 h-modal sm:h-full flex`}>
                 <div className="w-full h-full max-w-md md:h-auto modal-body px-3">
                     <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                         <button
@@ -62,11 +33,9 @@ function LoginModal({ openModal, setModal }) {
                                 Autentificăte pe platformă
                             </h3>
                             <LoginForm
-                                handleSubmit={handleSubmit}
-                                auth={auth}
-                                loading={loading}
-                                forgetPassword={forgetPassword}
-                                setAuth={setAuth}
+                                setForgetModal={setForgetModal}
+                                setModal={setModal}
+                                closeModal={closeModal}
                             />
                         </div>
                     </div>

@@ -21,7 +21,6 @@ function InviteForm() {
                     headers: { 'x-auth-token': `${token}` },
                 },
             );
-            console.log(data);
             data && toast.success('Invitația a fost trimisă');
             setLoading(false);
         } catch (error) {

@@ -1,23 +1,24 @@
-import React from 'react';
-import { toast } from 'react-toastify';
 import { useParams, useNavigate } from 'react-router-dom';
-import { publicRequest } from '../../helpers/instance';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+
 import ButtonLoader from '../../components/buttons/ButtonLoader';
-import Layout from '../../components/Layout';
-import Input from '../../components/forms/Input';
 import PasswordInput from '../../components/forms/PasswordInput';
+import { publicRequest } from '../../helpers/instance';
+import Input from '../../components/forms/Input';
+import Layout from '../../components/Layout';
 
 function Register() {
-    const [loading, setLoading] = React.useState(false);
+    const [loading, setLoading] = useState(false);
     const { token } = useParams();
     const navigate = useNavigate();
-    const [register, setRegister] = React.useState({
+    const [register, setRegister] = useState({
         name: '',
         email: '',
         password: '',
     });
 
-    React.useEffect(() => {
+    useEffect(() => {
         const getRegisterEmail = async (token) => {
             const { data } = await publicRequest.get(`/auth/register/${token}`, {
                 headers: { 'x-auth-token': `${token}` },
@@ -40,14 +41,11 @@ function Register() {
             navigate('/');
             setRegister({ name: '', email: '', password: '' });
         } catch (error) {
-            console.error(error);
-            toast.error('Ceva a mers gresit');
             setLoading(false);
+            toast.error('Eroare la crearea contului');
             setRegister({ name: '', email: '', password: '' });
         }
     };
-
-    console.log(token);
 
     return (
         <Layout>

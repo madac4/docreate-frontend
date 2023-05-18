@@ -12,7 +12,6 @@ export const loginUser = (body) => async (dispatch) => {
     try {
         const { data } = await publicRequest.post('/auth/login', body, config);
         dispatch(loginSuccess(data));
-        toast.success('Te-ai logat cu succes');
         const token = data.token
             ? data.token
             : localStorage.getItem('persist:root') &&
@@ -33,7 +32,6 @@ export const loadUser = (token) => async (dispatch) => {
 
             if (data) {
                 dispatch(userLoaded(data));
-                console.log(data);
             } else {
                 dispatch(loginError());
             }

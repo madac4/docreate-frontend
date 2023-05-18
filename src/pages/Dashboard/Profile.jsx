@@ -49,8 +49,7 @@ function Profile() {
                         headers: { 'x-auth-token': `${token}` },
                     },
                 );
-                // user = data;
-                console.log(data);
+                user = data;
                 toast.success('Informația generală a fost modificată');
                 setLoading(false);
                 setUpdatedUser({
@@ -82,7 +81,6 @@ function Profile() {
                     },
                 );
                 user = data;
-                console.log(data);
                 toast.success('Parola a fost modificată');
                 setLoading(false);
                 setUpdatedUser({
@@ -98,7 +96,6 @@ function Profile() {
     };
 
     const handleDrop = async (acceptedFiles) => {
-        console.log(acceptedFiles);
         const formData = new FormData();
         formData.append('profilePicture', acceptedFiles);
 

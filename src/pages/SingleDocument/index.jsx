@@ -124,7 +124,6 @@ function SingleDocument() {
         toast.success('Element adaugat cu succes');
     };
 
-    console.log(inputValues);
     return (
         <Layout>
             {element ? (

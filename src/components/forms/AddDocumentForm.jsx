@@ -16,8 +16,6 @@ function AddDocumentForm() {
     const { token } = useSelector((state) => state.auth);
     const [loading, setLoading] = useState(false);
 
-    console.log(input);
-
     async function handleSubmit(event) {
         event.preventDefault();
         setLoading(true);
@@ -51,7 +49,6 @@ function AddDocumentForm() {
         }
     };
 
-    console.log(input);
     return (
         <form onSubmit={handleSubmit}>
             <Input
