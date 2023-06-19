@@ -2,7 +2,7 @@ import React from 'react';
 import { XMarkIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 import Dropzone from 'react-dropzone';
 import { publicRequest } from '../../helpers/instance';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import ButtonLoader from '../buttons/ButtonLoader';
 
 function DocumentModal({ document, isOpen, setIsOpen, token }) {
@@ -30,22 +30,22 @@ function DocumentModal({ document, isOpen, setIsOpen, token }) {
                 );
                 document = data;
                 if (newDocument.file && !newDocument.name) {
-                    toast.success('Fișierul a fost modificat cu succes');
+                    // toast.success('Fișierul a fost modificat cu succes');
                 } else if (newDocument.name && !newDocument.file) {
-                    toast.success('Numele a fost modificat cu succes');
+                    // toast.success('Numele a fost modificat cu succes');
                 } else {
-                    toast.success('Datele au fost modificate cu succes');
+                    // toast.success('Datele au fost modificate cu succes');
                 }
                 setLoading(false);
                 setIsOpen(false);
                 setNewDocument({ name: '', file: '' });
             } catch (error) {
                 console.log(error);
-                toast.error('Documentul nu a putut fi modificat');
+                // toast.error('Documentul nu a putut fi modificat');
                 setLoading(false);
             }
         } else {
-            toast.error('Câmpurile sunt goale');
+            // toast.error('Câmpurile sunt goale');
             setLoading(false);
         }
     };

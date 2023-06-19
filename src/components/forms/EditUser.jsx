@@ -3,7 +3,7 @@ import Input from './Input';
 import PasswordInput from './PasswordInput';
 import ButtonLoader from '../buttons/ButtonLoader';
 import { publicRequest } from '../../helpers/instance';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 
 function EditUser({ user, token, closeModal }) {
     const [updatedUser, setUpdatedUser] = React.useState({ name: '', email: '', password: '' });
@@ -18,17 +18,17 @@ function EditUser({ user, token, closeModal }) {
                     headers: { 'x-auth-token': `${token}` },
                 });
                 user = data;
-                toast.success('Utilizatorul a fost modificat cu succes');
+                // toast.success('Utilizatorul a fost modificat cu succes');
                 setLoading(false);
                 closeModal();
                 setUpdatedUser({ name: '', email: '', password: '' });
             } catch (error) {
                 console.log(error);
-                toast.error('Utilizatorul nu a putut fi modificat');
+                // toast.error('Utilizatorul nu a putut fi modificat');
                 setLoading(false);
             }
         } else {
-            toast.error('Câmpurile sunt goale');
+            // toast.error('Câmpurile sunt goale');
             setLoading(false);
         }
     };

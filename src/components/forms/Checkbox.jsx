@@ -2,7 +2,7 @@ import React from 'react';
 
 function Checkbox({ onChange, checked }) {
     return (
-        <div className="flex items-start">
+        <div className="flex items-start cursor-pointer">
             <div className="flex items-center h-5">
                 <input
                     type="checkbox"

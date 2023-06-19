@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { publicRequest } from '../../helpers/instance';
 import EditUserModal from '../../components/modals/EditUserModal';
 import { PencilSquareIcon, TrashIcon } from '@heroicons/react/24/outline';

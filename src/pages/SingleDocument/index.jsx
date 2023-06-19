@@ -1,10 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import FileViewer from 'react-file-viewer';
+import { toast } from 'react-hot-toast';
 
-import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
-import styles from './styles.module.scss';
 import { publicRequest } from '../../helpers/instance';
 import Layout from '../../components/Layout';
 import { Loader } from '../../components/buttons/Loader';
@@ -12,30 +10,16 @@ import ButtonLoader from '../../components/buttons/ButtonLoader';
 import buttons from '../../components/styles/buttons.module.scss';
 import Input from '../../components/forms/Input';
 import DateInput from '../../components/forms/DateInput';
-import { toast } from 'react-toastify';
+import { PrimaryLink } from '../../components/buttons/ButtonPrimary';
 
 function SingleDocument() {
-    const [viewportWidth, setViewportWidth] = React.useState(window.innerWidth);
     const [inputValues, setInputValues] = React.useState({ repeater: [] });
     const [repeater, setRepeater] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
-    const [html, setHtml] = React.useState('');
     const [url, setUrl] = React.useState('');
     const [element, setElement] = React.useState(null);
     const { token } = useSelector((state) => state.auth);
     const { slug } = useParams();
-
-    React.useEffect(() => {
-        function handleResize() {
-            setViewportWidth(window.innerWidth);
-        }
-
-        window.addEventListener('resize', handleResize);
-
-        return () => {
-            window.removeEventListener('resize', handleResize);
-        };
-    }, []);
 
     React.useEffect(() => {
         const getDocument = async (slug) => {
@@ -52,35 +36,7 @@ function SingleDocument() {
         getDocument(slug);
     }, [slug, token]);
 
-    React.useEffect(() => {
-        const getInitialDocument = async (element) => {
-            if (viewportWidth > 766) {
-                try {
-                    if (element && element._id) {
-                        const { data } = await publicRequest.get(
-                            `/documents/getfile/${element._id}`,
-                            {
-                                responseType: 'blob',
-                                headers: { 'x-auth-token': token },
-                            },
-                        );
-                        const url = URL.createObjectURL(data);
-                        setUrl(url);
-                        setLoading(false);
-                        setHtml('');
-                        setTimeout(() => {
-                            setHtml(<FileViewer fileType={'docx'} filePath={url} />);
-                        }, 200);
-                    }
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-        };
-        getInitialDocument(element && element);
-    }, [element, token, viewportWidth]);
-
-    const getDoc = async (event) => {
+    const generateDocument = async (event) => {
         event.preventDefault();
         setLoading(true);
         try {
@@ -91,26 +47,11 @@ function SingleDocument() {
             });
             const url = URL.createObjectURL(data);
             setUrl(url);
+            toast.success('Documentul a fost generat cu succes');
             setLoading(false);
-            setHtml('');
-            setTimeout(() => {
-                if (viewportWidth > 766) {
-                    setHtml(<FileViewer fileType={'docx'} filePath={url} />);
-                } else {
-                    setHtml(
-                        <a
-                            href={url}
-                            download={slug}
-                            className={`${buttons.buttonPrimary} py-3 w-full mt-4`}>
-                            <ArrowDownTrayIcon className="h-6 w-6" />
-                            Descarcă Documentul
-                        </a>,
-                    );
-                }
-            }, 200);
         } catch (error) {
             console.log(error);
-            alert('Nu există așa document');
+            toast.error('Documentul nu exista');
             setLoading(false);
         }
     };
@@ -127,98 +68,90 @@ function SingleDocument() {
     return (
         <Layout>
             {element ? (
-                <div className={styles.liveDocument}>
-                    <div className={styles.liveDocument__editor}>
-                        <h2 className="font-bold text-2xl text-gray-900 dark:text-gray-300 mb-8">
-                            Complecatați câmpurile de mai jos pentru completarea documentului:{' '}
-                            {element.name && element.name}
-                        </h2>
-                        <form action="#" onSubmit={getDoc} method="GET">
-                            <div className={`${styles.fields} mb-5`}>
-                                {element &&
-                                    element.inputs &&
-                                    element.inputs.map((input, index) =>
-                                        input.type !== 'date' && !input.repeat ? (
-                                            <Input
-                                                key={`${input.name}_${index}`}
-                                                type={input.type}
-                                                label={input.placeholder}
-                                                name={input.name}
-                                                placeholder={input.placeholder}
-                                                onChange={(e) =>
-                                                    setInputValues({
-                                                        ...inputValues,
-                                                        [e.target.name]: e.target.value,
+                <div className="mx-auto mt-10 max-w-3xl">
+                    <h2 className="font-bold text-2xl text-gray-900 dark:text-gray-300 mb-8">
+                        Complecatați câmpurile de mai jos pentru completarea documentului:{' '}
+                        {element.name && element.name}
+                    </h2>
+                    <form action="#" onSubmit={generateDocument} className="w-full" method="GET">
+                        <div className="mb-5 flex flex-col gap-3">
+                            {element &&
+                                element.inputs &&
+                                element.inputs.map((input, index) =>
+                                    input.type !== 'date' && !input.repeat ? (
+                                        <Input
+                                            key={`${input.name}_${index}`}
+                                            type={input.type}
+                                            label={input.placeholder}
+                                            name={input.name}
+                                            placeholder={input.placeholder}
+                                            onChange={(e) =>
+                                                setInputValues({
+                                                    ...inputValues,
+                                                    [e.target.name]: e.target.value,
+                                                })
+                                            }
+                                            required
+                                        />
+                                    ) : input.type !== 'date' && input.repeat ? (
+                                        <Input
+                                            key={`${input.name}_${index}`}
+                                            type={input.type}
+                                            label={`${input.placeholder} *`}
+                                            name={input.name}
+                                            placeholder={input.placeholder}
+                                            onChange={(e) =>
+                                                setRepeater({
+                                                    ...repeater,
+                                                    [e.target.name]: e.target.value,
+                                                })
+                                            }
+                                        />
+                                    ) : (
+                                        <DateInput
+                                            key={`${input.name}_${index}`}
+                                            type={input.type}
+                                            label={input.placeholder}
+                                            name={input.name}
+                                            required
+                                            onChange={(e) => {
+                                                const date = new Date(e.target.value);
+                                                const formattedDate = date
+                                                    .toLocaleDateString('en-GB', {
+                                                        day: '2-digit',
+                                                        month: '2-digit',
+                                                        year: 'numeric',
                                                     })
-                                                }
-                                                required
-                                            />
-                                        ) : input.type !== 'date' && input.repeat ? (
-                                            <Input
-                                                key={`${input.name}_${index}`}
-                                                type={input.type}
-                                                label={`${input.placeholder} *`}
-                                                name={input.name}
-                                                placeholder={input.placeholder}
-                                                onChange={(e) =>
-                                                    setRepeater({
-                                                        ...repeater,
-                                                        [e.target.name]: e.target.value,
-                                                    })
-                                                }
-                                            />
-                                        ) : (
-                                            <DateInput
-                                                key={`${input.name}_${index}`}
-                                                type={input.type}
-                                                label={input.placeholder}
-                                                name={input.name}
-                                                required
-                                                onChange={(e) => {
-                                                    const date = new Date(e.target.value);
-                                                    const formattedDate = date
-                                                        .toLocaleDateString('en-GB', {
-                                                            day: '2-digit',
-                                                            month: '2-digit',
-                                                            year: 'numeric',
-                                                        })
-                                                        .replace(/\//g, '.');
-                                                    setInputValues({
-                                                        ...inputValues,
-                                                        [e.target.name]: formattedDate,
-                                                    });
-                                                }}
-                                            />
-                                        ),
-                                    )}
-                            </div>
-                            <button
-                                type="button"
-                                onClick={pushRepeater}
-                                className={buttons.buttonPrimary}>
-                                Adauga rand
-                            </button>
+                                                    .replace(/\//g, '.');
+                                                setInputValues({
+                                                    ...inputValues,
+                                                    [e.target.name]: formattedDate,
+                                                });
+                                            }}
+                                        />
+                                    ),
+                                )}
+                        </div>
+                        <button
+                            type="button"
+                            onClick={pushRepeater}
+                            className={buttons.buttonPrimary}>
+                            Adauga rand
+                        </button>
 
-                            <ButtonLoader isLoading={loading} classNames={'w-full py-3 mt-5'}>
-                                Generează Document
-                            </ButtonLoader>
-                            {url.length > 0 && viewportWidth < 767 && html}
-                        </form>
-                    </div>
-                    <div className={styles.liveDocument__body}>
-                        {url.length > 0 && (
-                            <>
-                                {html}
-                                <a
-                                    href={url}
-                                    download={slug}
-                                    className={`${buttons.buttonPrimary} py-3 w-full`}>
-                                    <ArrowDownTrayIcon className="h-6 w-6" />
-                                    Descarcă Documentul
-                                </a>
-                            </>
+                        <ButtonLoader isLoading={loading} classNames={'w-full py-3 mt-5'}>
+                            Generează Document
+                        </ButtonLoader>
+
+                        {url && (
+                            <PrimaryLink
+                                href={url}
+                                download={element.slug}
+                                classNames="mt-5 w-full">
+                                Descarca Document
+                            </PrimaryLink>
                         )}
-                    </div>
+                    </form>
                 </div>
             ) : (
                 <main className="h-screen dark:bg-gray-900">

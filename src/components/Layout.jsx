@@ -1,7 +1,8 @@
-import React from 'react';
+import { useState } from 'react';
 import { DocumentPlusIcon } from '@heroicons/react/24/outline';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import logo from '../logo.svg';
 
 import LoginModal from './modals/LoginModal';
 import styles from './styles/buttons.module.scss';
@@ -10,9 +11,8 @@ import UserDropdown from './dashboard/UserDropdown';
 
 export default function Layout({ children }) {
     const { user, isAuth, isAdmin } = useSelector((state) => state.auth);
-    const [modal, setModal] = React.useState(false);
+    const [modal, setModal] = useState(false);
     const location = useLocation();
-
     const handleModal = () => {
         setModal(!modal);
     };
@@ -23,9 +23,10 @@ export default function Layout({ children }) {
                 <nav className="bg-white border-gray-200 py-2.5 dark:bg-gray-800 border-b dark:border-gray-600">
                     <div className="flex flex-wrap justify-between items-center container">
                         <Link to="/" className="flex items-center">
-                            <span className="self-center text-md font-semibold whitespace-nowrap dark:text-white md:text-xl">
+                            {/* <span className="self-center text-md font-semibold whitespace-nowrap dark:text-white md:text-xl">
                                 doCreator
-                            </span>
+                            </span> */}
+                            <img src={logo} alt="" />
                         </Link>
                         <div className="flex items-center lg:order-2">
                             {isAuth ? (

@@ -7,7 +7,7 @@ import Input from '../../components/forms/Input';
 import PasswordInput from '../../components/forms/PasswordInput';
 import ButtonLoader from '../../components/buttons/ButtonLoader';
 import { publicRequest } from '../../helpers/instance';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import Dropzone from 'react-dropzone';
 
 function Profile() {
@@ -50,7 +50,7 @@ function Profile() {
                     },
                 );
                 user = data;
-                toast.success('Informația generală a fost modificată');
+                // toast.success('Informația generală a fost modificată');
                 setLoading(false);
                 setUpdatedUser({
                     name: '',
@@ -58,11 +58,11 @@ function Profile() {
                 });
             } catch (error) {
                 console.log(error);
-                toast.error('Informația generală nu a putut fi modificată');
+                // toast.error('Informația generală nu a putut fi modificată');
                 setLoading(false);
             }
         } else {
-            toast.error('Câmpurile sunt goale');
+            // toast.error('Câmpurile sunt goale');
             setLoading(false);
         }
     };
@@ -81,7 +81,7 @@ function Profile() {
                     },
                 );
                 user = data;
-                toast.success('Parola a fost modificată');
+                // toast.success('Parola a fost modificată');
                 setLoading(false);
                 setUpdatedUser({
                     currentPassword: '',
@@ -89,7 +89,7 @@ function Profile() {
                     confirmPassword: '',
                 });
             } catch (error) {
-                toast.error(error.response.data.error);
+                // toast.error(error.response.data.error);
                 setLoading(false);
             }
         }

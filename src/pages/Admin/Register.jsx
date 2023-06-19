@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 
 import ButtonLoader from '../../components/buttons/ButtonLoader';
 import PasswordInput from '../../components/forms/PasswordInput';
@@ -36,13 +36,13 @@ function Register() {
             const { data } = await publicRequest.post('/auth/register', register, {
                 headers: { 'x-auth-token': `${token}` },
             });
-            data && toast.success('Utilizatorul a fost creat cu succes');
+            // data && toast.success('Utilizatorul a fost creat cu succes');
             setLoading(false);
             navigate('/');
             setRegister({ name: '', email: '', password: '' });
         } catch (error) {
             setLoading(false);
-            toast.error('Eroare la crearea contului');
+            // toast.error('Eroare la crearea contului');
             setRegister({ name: '', email: '', password: '' });
         }
     };

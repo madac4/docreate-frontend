@@ -9,6 +9,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { Link, useNavigate, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+
 import ThemeToggle from '../../components/buttons/ThemeToggle';
 import UserDropdown from '../../components/dashboard/UserDropdown';
 
@@ -176,7 +177,12 @@ export default function Layout({ children }) {
                 </aside>
             )}
 
-            <main className={isAdmin ? 'p-4 md:ml-64 h-auto pt-20' : 'p-4 h-auto pt-20'}>
+            <main
+                className={
+                    isAdmin
+                        ? 'p-4 md:ml-64 pt-20 h-screen overflow-auto'
+                        : 'p-4 h-screen overflow-auto pt-20'
+                }>
                 {children}
             </main>
         </div>

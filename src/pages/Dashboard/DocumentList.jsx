@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import Layout from '../../components/dashboard/Layout';
 import { publicRequest } from '../../helpers/instance';
 import { useSelector } from 'react-redux';
@@ -41,9 +41,9 @@ function DocumentList() {
             setTimeout(() => {
                 setSearchResults((prev) => prev.filter((document) => document._id !== id));
             }, 300);
-            toast.success('Documentul a fost șters cu succes');
+            // toast.success('Documentul a fost șters cu succes');
         } catch (error) {
-            toast.error('Documentul nu a putut fi șters');
+            // toast.error('Documentul nu a putut fi șters');
         }
     };
 

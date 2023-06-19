@@ -5,23 +5,31 @@ import { MagnifyingGlassIcon, PlusSmallIcon } from '@heroicons/react/24/outline'
 import Input from '../forms/Input';
 import InviteModal from '../modals/InviteModal';
 import AddDocumentModal from '../modals/AddDocumentModal';
+import { searchDocument, searchUser } from '../../utils/search';
 
 function Table({ children, data, onSearchResults, actionButton }) {
     const [openInvitation, setOpenInvitation] = useState(false);
+
+    const [timer, setTimer] = useState(null);
     const { pathname } = useLocation();
     const currentPath = `/${pathname.split('/').pop()}`;
+
     useEffect(() => {
         onSearchResults(data);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
-    const handleSearch = (event) => {
-        const searchTerm = event.target.value;
-
-        const results = data.filter((user) =>
-            user.name.toLowerCase().includes(searchTerm.toLowerCase()),
-        );
-        onSearchResults(results);
+    const handleSearch = (e) => {
+        clearTimeout(timer);
+        const newTimer = setTimeout(() => {
+            const searchTerm = e.target.value;
+            let filtered = [];
+            currentPath === '/users'
+                ? (filtered = searchUser(data, searchTerm))
+                : (filtered = searchDocument(data, searchTerm));
+            onSearchResults(filtered);
+        }, 200);
+        setTimer(newTimer);
     };
 
     return (

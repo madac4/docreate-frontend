@@ -1,6 +1,6 @@
 import { ArrowUpTrayIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import Dropzone from 'react-dropzone';
 import { useState } from 'react';
 
@@ -24,14 +24,13 @@ function AddDocumentForm() {
         formData.append('name', file.name);
         formData.append('inputs', JSON.stringify(file.inputs));
         try {
-            await publicRequest.post('/documents', formData, {
+            await publicRequest.post('/documents/upload', formData, {
                 headers: { 'x-auth-token': `${token}` },
             });
             toast.success('Documentul a fost adăugat cu succes');
             setLoading(false);
         } catch (error) {
-            console.error(error);
-            toast.error('A apărut o erroare la încărcare');
+            toast.error(error.response.data.message);
             setLoading(false);
         }
         setFile({ name: '', file: '', inputs: [] });
@@ -49,6 +48,24 @@ function AddDocumentForm() {
         }
     };
 
+    const handleDrop = (acceptedFiles) => {
+        const selectedFile = acceptedFiles[0];
+        const acceptedFileTypes = [
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        ];
+
+        if (selectedFile) {
+            const { type, size } = selectedFile;
+
+            if (!acceptedFileTypes.includes(type)) {
+                toast.error('Tipul de fisier nu este acceptat');
+            } else if (size > 16 * 1024 * 1024) {
+                toast.error('Introduceți un document mai mic de 16 MB');
+            } else {
+                setFile({ ...file, file: selectedFile });
+            }
+        }
+    };
     return (
         <form onSubmit={handleSubmit}>
             <Input
@@ -59,7 +76,15 @@ function AddDocumentForm() {
                 onChange={(e) => setFile({ ...file, name: e.target.value })}
             />
 
-            <Dropzone onDrop={(acceptedFiles) => setFile({ ...file, file: acceptedFiles[0] })}>
+            <Dropzone
+                onDrop={handleDrop}
+                accept={{
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': [
+                        '.docx',
+                        '.doc',
+                    ],
+                }}
+                maxSize={16 * 1024 * 1024}>
                 {({ getRootProps, getInputProps }) => (
                     <div
                         className="flex items-start flex-col justify-center w-full mt-3"
@@ -72,7 +97,7 @@ function AddDocumentForm() {
                                     and drop
                                 </p>
                                 <p className="text-xs text-gray-500 dark:text-gray-400">
-                                    DOCX or PDF (MAX. 16MB)
+                                    DOCX or DOC (MAX. 16MB)
                                 </p>
                             </div>
                             <input

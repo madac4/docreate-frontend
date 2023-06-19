@@ -3,7 +3,7 @@ import ButtonLoader from '../buttons/ButtonLoader';
 import Input from './Input';
 import { publicRequest } from '../../helpers/instance';
 import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 
 function InviteForm() {
     const [loading, setLoading] = React.useState(false);
@@ -21,11 +21,11 @@ function InviteForm() {
                     headers: { 'x-auth-token': `${token}` },
                 },
             );
-            data && toast.success('Invitația a fost trimisă');
+            // data && toast.success('Invitația a fost trimisă');
             setLoading(false);
         } catch (error) {
             console.error(error);
-            toast.error('Ceva a mers gresit');
+            // toast.error('Ceva a mers gresit');
             setLoading(false);
         }
         setEmail('');

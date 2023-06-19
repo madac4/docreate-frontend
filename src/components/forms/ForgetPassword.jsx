@@ -1,7 +1,7 @@
 import React from 'react';
 import Input from './Input';
 import ButtonLoader from '../buttons/ButtonLoader';
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import { publicRequest } from '../../helpers/instance';
 
 function ForgetPassword({ closeModal }) {
@@ -19,7 +19,7 @@ function ForgetPassword({ closeModal }) {
             closeModal();
         } catch (error) {
             console.log(error);
-            toast.error('Utilizatorul nu a fost găsit');
+            // toast.error('Utilizatorul nu a fost găsit');
             setLoading(false);
         }
     };

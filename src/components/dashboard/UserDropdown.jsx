@@ -6,10 +6,10 @@ import { useNavigate } from 'react-router-dom';
 function UserDropdown({ children, user, logOut, hidden }) {
     const [dropdown, setDropdown] = React.useState(false);
     const navigate = useNavigate();
-    const { sessionId, token } = useSelector((state) => state.auth);
+    const { token } = useSelector((state) => state.auth);
 
     const logout = () => {
-        logOut(sessionId, token);
+        logOut(token);
         navigate('/');
     };
     return (

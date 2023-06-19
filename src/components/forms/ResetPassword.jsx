@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import PasswordInput from './PasswordInput';
 import ButtonLoader from '../buttons/ButtonLoader';
 import { publicRequest } from '../../helpers/instance';
@@ -18,17 +18,17 @@ function ResetPassword({ token, closeModal }) {
                 const response = await publicRequest.put(`/auth/reset-password/${token}`, {
                     password: newPassword,
                 });
-                toast.success(response.data.message);
+                // toast.success(response.data.message);
                 setLoading(false);
                 closeModal();
                 navigate('/');
             } catch (error) {
                 console.log(error);
                 setLoading(false);
-                toast.error('Parola nu a fost modificată');
+                // toast.error('Parola nu a fost modificată');
             }
         } else {
-            toast.error('Parolele nu coincid');
+            // toast.error('Parolele nu coincid');
             setLoading(false);
         }
     };
